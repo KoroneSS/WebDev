@@ -1,0 +1,17 @@
+.navbar {
+    background-color: #89B6E3;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    white-space: nowrap;
+    overflow: -moz-hidden-unscrollable;
+    height: 100px;
+}
+
+.navbar h1{
+    padding-left: 10%;
+    font-size: calc(10px + 1vw);
+}
+.navlist{
+    padding-left: 30vw;
+}
