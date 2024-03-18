@@ -2,55 +2,39 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="homepage.css">
-
 </head>
 
 <body>
     <!-- navigation bar -->
-    <div class="navbar">
-        <h1 id="appname">PEARL LOVE FAHFAH</h1>
-        <div class="navlist">
-            <button class="navbutton" id="home">
-                <img src="navbarImages\home.png" alt="" width="20px" height="20px">
-                <a href="/" class="navlink">Home</a>
-            </button>
-
-            <button class="navbutton" id="search">
-                <img src="navbarImages\search.png" alt="" width="20px" height="20px">
-                <a href="/search" class="navlink " >Search</a>
-            </button>
-
-            <button class="navbutton" id="aboutus">
-                <img src="navbarImages\aboutus.png" alt="" width="20px" height="20px">
-                <a href="/aboutus" class="navlink">About Us</a>
-            </button>
-
-            <button class="navbutton" id="cart">
-                <img src="navbarImages\cart.png" alt="" width="20px" height="20px">
-                <a href="/cart" class="navlink">Cart</a>
-            </button>
+    <div class="navbar bg-blue-400 flex items-center justify-between h-20">
+        <h1 id="appname" class="pl-10 text-2xl">PEARL LOVE FAHFAH</h1>
+        <div class="navlist pl-40">
+            <a href="/" class="navlink flex items-center">
+                <img src="navbarImages/home.png" alt="" class="w-5 h-5">
+                Home
+            </a>
+            <a href="/search" class="navlink flex items-center">
+                <img src="navbarImages/search.png" alt="" class="w-5 h-5">
+                Search
+            </a>
+            <a href="/aboutus" class="navlink flex items-center">
+                <img src="navbarImages/aboutus.png" alt="" class="w-5 h-5">
+                About Us
+            </a>
+            <a href="/cart" class="navlink flex items-center">
+                <img src="navbarImages/cart.png" alt="" class="w-5 h-5">
+                Cart
+            </a>
         </div>
-
-        <button id="signin">
-            Sign in
-        </button>
+        <button id="signin" class="bg-white px-4 py-2 rounded">Sign in</button>
     </div>
 
     <!-- search bar -->
-    <div class="searchbar">
-        <div class="searchbox">
-            <div class="searchimage">
-                <img scr="searchbar\search.png" width="20px" height="20px">
-            </div>
-
-            <div class="searchtextbox">
-                <input type="text">
-            </div>
-
-            <div class="searchbutton">
-                <button class="searchbutton" id="search">Search</button>
-            </div>
+    <div class="searchbar bg-gray-300 h-20">
+        <div class="searchbox flex items-center justify-center">
+            <img src="searchbar/search.png" alt="" class="w-5 h-5">
+            <input type="text" class="ml-2 p-1">
+            <button class="ml-2 px-4 py-2 bg-blue-400 text-white rounded">Search</button>
         </div>
     </div>
 
