@@ -2,60 +2,58 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="signin.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
 <body>
     <!-- navigation bar -->
-    <div class="navbar">
-        <h1 id="appname">PEARL LOVE FAHFAH</h1>
-        <div class="navlist">
-            <button class="navbutton" id="home">
-                <img src="navbarImages\home.png" alt="" width="20px" height="20px">
+    <div class="navbar flex items-center bg-blue-500 h-20">
+        <h1 class="pl-10 text-xl">PEARL LOVE FAHFAH</h1>
+        <div class="navlist ml-auto">
+            <button class="navbutton">
+                <img src="\image\navbarImages\home.png" alt="" width="20px" height="20px">
                 Home
             </button>
 
-            <button class="navbutton" id="search">
-                <img src="navbarImages\search.png" alt="" width="20px" height="20px">
+            <button class="navbutton">
+                <img src="\image\navbarImages\search.png" alt="" width="20px" height="20px">
                 Search
             </button>
 
-            <button class="navbutton" id="aboutus">
-                <img src="navbarImages\aboutus.png" alt="" width="20px" height="20px">
+            <button class="navbutton">
+                <img src="\image\navbarImages\aboutus.png" alt="" width="20px" height="20px">
                 About Us
             </button>
 
-            <button class="navbutton" id="cart">
-                <img src="navbarImages\cart.png" alt="" width="20px" height="20px">
+            <button class="navbutton">
+                <img src="\image\navbarImages\cart.png" alt="" width="20px" height="20px">
                 Cart
             </button>
         </div>
 
-        <button id="signin">
-            Sign in
-        </button>
+        <button class="ml-5">Sign in</button>
     </div>
     <!-- sign in box -->
-    <div class="signin">
-        <div class="signinbox">
-            <div class="signincontent">
+    <div class="signin flex items-center justify-center bg-gray-200 h-96">
+        <div class="signinbox border">
+            <div class="signincontent p-2">
                 <div class="logintext">
-                    <h1>Login</h1>
+                    <h1 class="text-xl">Login</h1>
                     <h3>log in to access your account</h3>
                 </div>
                 <form class="loginform">
                     <div class="textinput">
-                        <input type="text" id="email">
-                        <input type="text" id="password">
+                        <input type="text" id="email" class="border">
+                        <input type="text" id="password" class="border">
                     </div>
                     <div class="rememberme">
-                        <input type="checkbox" id="rememberme">
+                        <input type="checkbox" id="rememberme" class="mr-1">
                         <label for="rememberme">Remember Me</label>
-                        <a>Forgot your password?</a>
+                        <a class="ml-2">Forgot your password?</a>
                     </div>
-                    <div class="signinbutton">
-                        <button id="login">Log in</button>
-                        <button id="adminlogin">Log In as Administrator</button>
+                    <div class="signinbutton mt-2">
+                        <button class="bg-blue-500 text-white px-2 py-1 mr-2">Log in</button>
+                        <button class="bg-blue-500 text-white px-2 py-1">Log In as Administrator</button>
                     </div>
                 </form>
             </div>
