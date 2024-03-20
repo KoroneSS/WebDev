@@ -38,22 +38,25 @@
         <div class="signinbox">
             <div class="signincontent">
                 <div class="logintext">
-                    <h1 class="text-xl">Login</h1>
-                    <h3>log in to access your account</h3>
+                    <h1 class="login">Login</h1>
+                    <h3 class="poppin pb-5">log in to access your account</h3>
                 </div>
                 <form class="loginform" action="/signin-post" method="POST">
-                    <div class="textinput">
-                        <input type="text" id="email" class="border">
-                        <input type="text" id="password" class="border">
+                    <div class="textinput flex flex-col">
+                        <input type="text" id="email" class="inputbox">
+                        <input type="text" id="password" class="inputbox">
                     </div>
-                    <div class="rememberme">
-                        <input type="checkbox" id="rememberme" class="mr-1">
-                        <label for="rememberme">Remember Me</label>
-                        <a class="ml-2">Forgot your password?</a>
+                    <div class="rememberandforgetpassword flex-row flex">
+                        <div class="rememberme">
+                            <input type="checkbox" id="rememberme">
+                            <label for="rememberme" class="checkmark"></label>
+                            Remember Me
+                    </div>
+                        <a class="ml-2 poppin pl-28 forget-orange" href="#">Forgot your password?</a>
                     </div>
                     <div class="signinbutton">
-                        <button class="bg-blue-500 text-white px-2 py-1 mr-2">Log in</button>
-                        <button class="bg-blue-500 text-white px-2 py-1">Log In as Administrator</button>
+                        <button class="loginbutton mr-28">Log in</button>
+                        <button class="loginbutton">Log In as Administrator</button>
                     </div>
                 </form>
             </div>
