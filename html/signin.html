@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- navigation bar -->
+    <nav class="navbar bg-customblue flex items-center justify-between h-20 ">
+        <h1 id="appname" class="pl-10 text-2xl">PEARL LOVE FAHFAH</h1>
+        <div class="navlist m-6 flex">
+            <a href="/" class="navlink flex items-center">
+                <img src="/image/navbarImages/home.png" alt="" class="w-5 h-5">
+                Home
+            </a>
+            <a href="/search" class="navlink flex items-center pl-3">
+                <img src="/image/navbarImages/search.png" alt="" class="w-5 h-5">
+                Search
+            </a>
+            <a href="/aboutus" class="navlink flex items-center pl-3">
+                <img src="/image/navbarImages/aboutus.png" alt="" class="w-5 h-5">
+                About Us
+            </a>
+            <a href="/cart" class="navlink flex items-center pl-3">
+                <img src="/image/navbarImages/cart.png" alt="" class="w-5 h-5">
+                Cart
+            </a>
+        </div>
+        <form action="/signin">
+            <button id="signin" class="bg-white pl-3 py-2 rounded">Sign in</button>
+        </form>
+    </nav>
+    <!-- sign in box -->
+    <div class="signin">
+        <div class="signinbox">
+            <div class="signincontent">
+                <div class="logintext">
+                    <h1 class="text-xl">Login</h1>
+                    <h3>log in to access your account</h3>
+                </div>
+                <form class="loginform" action="/signin-post" method="POST">
+                    <div class="textinput">
+                        <input type="text" id="email" class="border">
+                        <input type="text" id="password" class="border">
+                    </div>
+                    <div class="rememberme">
+                        <input type="checkbox" id="rememberme" class="mr-1">
+                        <label for="rememberme">Remember Me</label>
+                        <a class="ml-2">Forgot your password?</a>
+                    </div>
+                    <div class="signinbutton">
+                        <button class="bg-blue-500 text-white px-2 py-1 mr-2">Log in</button>
+                        <button class="bg-blue-500 text-white px-2 py-1">Log In as Administrator</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    
+</body>
+
+</html>
