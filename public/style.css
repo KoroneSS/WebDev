@@ -722,3 +722,8 @@ video {
   background-color: white;
   width:80%;
 }
+
+.poppin{
+  font-size: 16px;
+  font-family: 'Poppins';
+}
