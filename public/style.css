@@ -678,9 +678,11 @@ video {
 .bg-customblue{
   background-color: #89B6E3;
 }
-
-.pl-40vm{
-  padding-left: 60vm;
+.pl-10vw{
+  padding-left: 10vw;
+}
+.pl-40vw{
+  padding-left: 40vw;
 }
 
 .signin{
@@ -701,4 +703,22 @@ video {
 }
 .signincontent{
   padding: 5px;
+}
+
+.fz-24{
+  font-size: 24px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+.fz-16{
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+.line{
+  height:1px;
+  background-color: white;
+  width:80%;
 }
