@@ -9,31 +9,95 @@
 
 <body>
     <!-- navigation bar -->
-    <nav class="navbar bg-customblue flex items-center justify-between h-20 ">
-        <h1 id="appname" class="pl-10 text-2xl">PEARL LOVE FAHFAH</h1>
-        <div class="navlist m-6 flex">
-            <a href="/" class="navlink flex items-center">
-                <img src="/image/navbarImages/home.png" alt="" class="w-5 h-5">
+    <nav class="navbar bg-customblue flex items-center h-20">
+        <h1 id="appname" class="pl-10vw fz-24">PEARL LOVE FAHFAH</h1>
+        <div class="navlist pl-40vw flex">
+            <a href="/" class="navlink flex items-center fz-16">
+                <img src="/image/navbarImages/home.png" alt="" class="w-5 h-5 mr-1">
                 Home
             </a>
-            <a href="/search" class="navlink flex items-center pl-3">
-                <img src="/image/navbarImages/search.png" alt="" class="w-5 h-5">
+            <a href="/search" class="navlink flex items-center pl-3 fz-16">
+                <img src="/image/navbarImages/search.png" alt="" class="w-5 h-5 mr-1">
                 Search
             </a>
-            <a href="/aboutus" class="navlink flex items-center pl-3">
-                <img src="/image/navbarImages/aboutus.png" alt="" class="w-5 h-5">
+            <a href="/aboutus" class="navlink flex items-center pl-3 fz-16">
+                <img src="/image/navbarImages/aboutus.png" alt="" class="w-5 h-5 mr-1">
                 About Us
             </a>
-            <a href="/cart" class="navlink flex items-center pl-3">
-                <img src="/image/navbarImages/cart.png" alt="" class="w-5 h-5">
+            <a href="/cart" class="navlink flex items-center pl-3 fz-16">
+                <img src="/image/navbarImages/cart.png" alt="" class="w-5 h-5 mr-1">
                 Cart
             </a>
         </div>
-        <form action="/signin">
-            <button id="signin" class="bg-white pl-3 py-2 rounded">Sign in</button>
+        <form action="/signin" method="" class="pl-4">
+            <button id="signin" class="bg-black text-white pl-3 pr-3 rounded fz-16">Sign in</button>
         </form>
     </nav>
-    
+    <!-- Cart -->
+    <div class="cartbg bg-customgray pt-16 pb-16 justify-center flex">
+        <div class="cartcontainer">
+            <h1 class="fz-24 pb-4">Cart</h1>
+            <div class="blackline bg-black h-1px"></div>
+        </div>
+    </div>
+    <!--footer-->
+    <footer class="w-screen bg-customblue p-4">
+
+        <div class="info flex p-2 justify-center h-dvh flex-wrap">
+            <!--only faculty and name-->
+            <div class="faculty">
+                <h1 class="fz-24 mb-2">PEARL LOVE FAH FAH</h1>
+                <h3 class="fz-16">Faculty of Information and</h3>
+                <h3 class="fz-16">Communication Technology (ICT),</h3>
+                <h3 class="fz-16">Mahidol University</h3>
+            </div>
+            <!--contact us-->
+            <div class="contactus ml-16">
+                <h1 class="fz-24 mb-4">Contact Us</h1>
+                <div class="contactinfo columns-2 flex">
+                    <!--first column-->
+                    <div class="c1">
+                        <div class="facebook flex mb-4 items-center">
+                            <img src="/image/footerImages/facebook.png" alt="facebook" width="37px" height="37px">
+                            <h1 class="fz-16 pl-2">PEARL LOVE FAHFAH Co., Ltd.</h1>
+                        </div>
+                        <div class="ig flex items-center">
+                            <img src="/image/footerImages/ig.png" alt="ig" width="37px" height="37px">
+                            <h1 class="fz-16 pl-2">PearlLoveFahFah</h1>
+                        </div>
+                    </div>
+                    <!--second column-->
+                    <div class="c2 ml-20">
+                        <div class="phone flex items-center mb-4">
+                            <img src="/image/footerImages/phone.png" alt="phone" width="37px" height="20px">
+                            <h1 class="fz-16 pl-2">08x-xxx-xxxx</h1>
+                        </div>
+                        <div class="email flex items-center">
+                            <img src="/image/footerImages/email.png" alt="email" width="37px" height="37px">
+                            <h1 class="fz-16 pl-2">PearlLoveFahFah@gmail.com</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="line mt-10 mb-4"></div>
+
+
+            <div class="under_line flex">
+                <div class="loc poppin">
+                    <h4>999 Phutthamonthon Sai 4 Rd, Salaya, Phutthamonthon District, Nakhon Pathom 73170</h4>
+                </div>
+
+                <div class="privacy flex fz-16 pl-20">
+                    <h4>Privacy Policy</h4>
+                    <h4 class="pl-4">Terms and Conditions</h4>
+                </div>
+            </div>
+        </div>
+
+
+
+    </footer>
+
 </body>
 
 </html>
