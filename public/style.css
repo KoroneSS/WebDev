@@ -185,3 +185,7 @@ input[type=text]{
   max-width: 1200px; /* Set maximum width for centering */
   margin: 0 auto; /* Center the content */
 }
+
+.aboutusbox{
+  background-color: #D9D9D9;
+}
