@@ -693,6 +693,8 @@ video {
   background-color: #E9E9E9;
 }
 
+
+/* signin page */
 .signin{
     
   background-color: #E9E9E9;
@@ -800,12 +802,35 @@ video {
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+
+.forget-orange{
+  color: #E27B1C;
+}
+
+.loginbutton{
+  background-color: #89B6E3;
+  width: fit-content;
+  height: 52px;
+  padding-left: 30px;
+  padding-right: 30px;
+  font-size: 16px;
+  font-family: 'Poppins';
+  border-radius: 10px;
+}
+
+
+
+/* end of signin page*/ 
 .fz-24{
   font-size: 24px;
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
 }
-
+.fz-48{
+  font-size:48px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
 input[type=text]{
     padding: 12px 20px;
 }
@@ -828,21 +853,74 @@ input[type=text]{
   font-family: 'Poppins';
 }
 
-.forget-orange{
-  color: #E27B1C;
-}
 
-.loginbutton{
-  background-color: #89B6E3;
-  width: fit-content;
-  height: 52px;
-  padding-left: 30px;
-  padding-right: 30px;
-  font-size: 16px;
-  font-family: 'Poppins';
-  border-radius: 10px;
-}
-
+/* cart page */
 .cartcontainer{
-  width: 80%;
+  width: 70%;
+  height: fit-content;
+  
+
+}
+
+.cartitems{
+  background-color: white;
+  border: 1px solid;
+  border-radius: 30px;
+  justify-content: center;
+  flex: 1;
+  display: flex;
+  height: fit-content;
+  margin-top: 4vw;
+  padding: 2vw;
+  float: left;
+  width:fit-content;
+  box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.195);
+}
+
+.ordersummary{
+  background-color: white;
+  border: 1px solid;
+  border-radius: 30px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: fit-content;
+  margin-top: 4vw;
+  margin-left: 10vw;
+  padding-top: 3vw;
+  padding-bottom: 5vw;
+  height: 100px;
+  width:40%;
+  flex: 0 0 30%;
+  box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.195);
+}
+
+.quantity{
+  
+}
+
+.decrease{
+  
+  background-color: #d9d9d94b;
+  width:40px;
+  height: 40px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 1.5px 1.5px rgba(0, 0, 0, 0.195);
+}
+
+.increase{
+  
+  background-color: #d9d9d94b;
+  width:40px;
+  height: 40px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 1.5px 1.5px rgba(0, 0, 0, 0.195);
+}
+.price{
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.w-fit{
+  width: fit-content;
 }

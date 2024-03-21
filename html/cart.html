@@ -5,12 +5,15 @@
     <link href="/style.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+
+    </script>
 </head>
 
 <body>
     <!-- navigation bar -->
     <nav class="navbar bg-customblue flex items-center h-20">
-        <h1 id="appname" class="pl-10vw fz-24">PEARL LOVE FAHFAH</h1>
+        <h1 id="appname" class="pl-10vw fz-24 whitespace-nowrap">PEARL LOVE FAHFAH</h1>
         <div class="navlist pl-40vw flex">
             <a href="/" class="navlink flex items-center fz-16">
                 <img src="/image/navbarImages/home.png" alt="" class="w-5 h-5 mr-1">
@@ -36,8 +39,42 @@
     <!-- Cart -->
     <div class="cartbg bg-customgray pt-16 pb-16 justify-center flex">
         <div class="cartcontainer">
-            <h1 class="fz-24 pb-4">Cart</h1>
+            <h1 class="fz-48 pb-4">Cart</h1>
             <div class="blackline bg-black h-1px"></div>
+            <div class="cartitemsandsummary flex flex-row">
+                <!--cart items-->
+                <div class="cartitems flex flex-col">
+                    <!--item-->
+                    <div class="item flex flex-row items-center">
+                        <img src="/image/footerImages/email.png" width="154px" height="154px">
+                        <div class="iteminfo pl-4">
+                            <div class="itemname pb-14 fz-24">Place Holder</div>
+                            <div class="itempriceandquantity flex flex-row justify-center w-fit">
+                                <h1 class="price fz-16" id="price" value="95">95 Baht</h1>
+                                <div class="quantity flex flex-row ">
+                                    <button class="decrease">-</button>
+                                    <div class="currentquantity fz-16" quantity-value="1">hi</div>
+                                    <button class="increase"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="blackline bg-black h-1px"></div>
+                </div>
+                <!--order summary-->
+                <div class="ordersummary">
+                    <h1 class="fz-24 pb-4">Order Summary</h1>
+                    <div class="quantity fz-16"></div>
+                    <div class="originalprice fz-16"></div>
+                    <div class="promocode fz-16"></div>
+                    <div class="discount fz-16"></div>
+                    <div class="totalprice fz-16"></div>
+                    <div class="point fz-16"></div>
+                    <form>
+                        <button class="checkout" type="submit"></button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
     <!--footer-->
