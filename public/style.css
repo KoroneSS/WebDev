@@ -143,9 +143,7 @@ input[type=text]{
   box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.195);
 }
 
-.quantity{
-  
-}
+
 
 .decrease{
   
@@ -181,11 +179,30 @@ input[type=text]{
   width: 70%;
 }
 
-.footer-container {
-  max-width: 1200px; /* Set maximum width for centering */
-  margin: 0 auto; /* Center the content */
-}
+
 
 .aboutusbox{
   background-color: #D9D9D9;
 }
+
+.cartbox{
+  background-color: white;
+  border: 1px solid;
+  border-radius: 30px;
+  width:fit-content;
+  height:fit-content;
+  box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.195);
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.ordersummarybox{
+  background-color: white;
+  border: 1px solid;
+  border-radius: 30px;
+  width:30%;
+  height:70%;
+  min-width: 5vw;
+  box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.195);
+}
+
