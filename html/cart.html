@@ -68,9 +68,10 @@
                             <div class="row">
                                 <!-- picture -->
                                 <div class="col-auto me-4">
-                                    <img src="/image/placeholdercart/spyxfam.png" class="img-fluid" width="156px" height="156px">
+                                    <img src="/image/placeholdercart/spyxfam.png" class="img-fluid" width="156px"
+                                        height="156px">
                                 </div>
-                                
+
                                 <!-- info -->
                                 <div class="col">
                                     <div class="col h-100 d-flex flex-column">
@@ -87,27 +88,94 @@
 
                                             <!--Quantity-->
                                             <div class="col text-end pe-5">
-                                                <button type="button" class="btn btn-light fz-16 d-inline-block" id="decrease">-</button>
+                                                <button type="button" class="btn btn-light fz-16 d-inline-block"
+                                                    id="decrease">-</button>
                                                 <h1 class="fz-16 d-inline-block">01</h1>
-                                                <button type="button" class="btn btn-light fz-16 d-inline-block" id="increase">+</button>
+                                                <button type="button" class="btn btn-light fz-16 d-inline-block"
+                                                    id="increase">+</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
-                            
+
                         </li>
                         <li class="list-group-item bg-transparent">xd</li>
                         <li class="list-group-item bg-transparent">xd</li>
                     </ul>
                 </div>
-                <div class="col-3 ordersummarybox ms-auto">
-                    hello
+                <!--order summary-->
+                <div class="col-4 ordersummarybox ms-auto px-5 py-4">
+                    <div class="ordercontainer">
+                        <div class="row text-center mb-4">
+                            <h1 class="fz-24">Order Summary</h1>
+                        </div>
+                        <!--total items-->
+                        <div class="row mb-3">
+                            <div class="col">
+                                <h1 class="fz-16">Total Items</h1>
+                            </div>
+                            <div class="col text-end">
+                                <h1 class="fz-16">1</h1>
+                            </div>
+                        </div>
+                        <!--Original Price-->
+                        <div class="row mb-3">
+                            <div class="col">
+                                <h1 class="fz-16">Original Price</h1>
+                            </div>
+                            <div class="col text-end">
+                                <h1 class="fz-16">330 baht</h1>
+                            </div>
+                        </div>
+                        <!--Promo code-->
+                        <div class="row mb-3">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input type="text" id="inputPromo" class="form-control" placeholder="xxxxxx" aria-describedby="button-addon">
+                                    <label for="inputPromo">Promo Code</label>
+                                </div>
+                                <button class="btn btn-outline-secondary btn-lg" type="button" id="button-addon">Use</button>
+                               
+                            </div>                            
+                        </div>
+                        <!--discount-->
+                        <div class="row mb-3">
+                            <div class="col">
+                                <h1 class="fz-16">Discount</h1>
+                            </div>
+                            <div class="col text-end">
+                                <h1 class="fz-16">xx baht</h1>
+                            </div>
+                        </div>
+                        <!--total price-->
+                        <div class="row mb-3">
+                            <div class="col">
+                                <h1 class="fz-16">Total Price</h1>
+                            </div>
+                            <div class="col text-end">
+                                <h1 class="fz-16">xx baht</h1>
+                            </div>
+                        </div>
+                        <!--points earned-->
+                        <div class="row mb-3">
+                            <div class="col">
+                                <h1 class="fz-16">Points Earned</h1>
+                            </div>
+                            <div class="col text-end">
+                                <h1 class="fz-16">xx points</h1>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+
+                            <button class="btn btn-light" style="--bs-btn-bg: #89B6E3    ;">Check Out</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 
     <!--footer-->
     <div class="container-fluid bg-customblue pt-4">
@@ -154,6 +222,7 @@
         </div>
 
     </div>
+    
 </body>
 
 
