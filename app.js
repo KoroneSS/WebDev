@@ -25,7 +25,11 @@ router.get("/cart", (req,res) => {
 })
 
 router.get("/search", (req,res) => {
-    res.status(200).sendFile(path.join(`${__dirname}/html/search.html`))
+    res.status(200).sendFile(path.join(`${__dirname}/html/search-ver.zenny-fixing-rn.html`))
+})
+
+router.get("/admin", (req,res) => {
+    res.status(200).sendFile(path.join(`${__dirname}/html/admin.html`))
 })
 
 app.listen(port,() =>{
