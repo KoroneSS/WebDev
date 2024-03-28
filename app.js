@@ -8,6 +8,7 @@ app.use(router)
 app.use(express.static('public'))
 app.use(express.static('node_modules'))
 
+
 router.get("/",(req,res) => {
     res.status(200).sendFile(path.join(`${__dirname}/html/homepage.html`))
 })
