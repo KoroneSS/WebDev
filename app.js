@@ -33,6 +33,10 @@ router.get("/admin", (req,res) => {
     res.status(200).sendFile(path.join(`${__dirname}/html/admin.html`))
 })
 
+router.get("/admin/product", (req,res) => {
+    res.status(200).sendFile(path.join(`${__dirname}/html/admin-product.html`))
+})
+
 app.listen(port,() =>{
     console.log(`listening on port ${port}`)
 })
