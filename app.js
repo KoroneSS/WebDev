@@ -3,11 +3,15 @@ const path = require("path")
 const router = express.Router()
 const app = express()
 const dotenv = require("dotenv")
+const cors = require("cors")
+
 dotenv.config()
 app.use(router)
+app.use(cors())
 app.use(express.static('public'))
 app.use(express.static('node_modules'))
-
+router.use(express.json());
+router.use(express.urlencoded({ extended: true }));
 /* Homepage */
 router.get("/",(req,res) => {
     res.status(200).sendFile(path.join(`${__dirname}/html/homepage.html`))
@@ -17,6 +21,33 @@ router.get("/",(req,res) => {
 /* Sign in*/
 router.get("/signin", (req,res) => {
     res.status(200).sendFile(path.join(`${__dirname}/html/signin.html`))
+})
+
+router.post("/login", (req,res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    fetch("http://localhost:3001/auth",
+    {
+        method: "POST",
+        body: JSON.stringify({user: username, pw: password}),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => response.json())
+    .then(data =>{
+        if(data.valid){
+            
+            res.cookie("id", data.id, {maxAge:9000})
+            res.redirect("/admin")
+        }
+        else{
+            console.log("invalid")
+            res.redirect("/signin")
+        }
+    })
+
+    
 })
 
 
@@ -44,6 +75,8 @@ router.get("/admin", (req,res) => {
 router.get("/admin/product", (req,res) => {
     res.status(200).sendFile(path.join(`${__dirname}/html/admin-product.html`))
 })
+
+
 
 
 /* Listen */

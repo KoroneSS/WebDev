@@ -13,6 +13,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
         integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
         crossorigin="anonymous"></script>
+    <script>
+      var valid = false;
+      try{
+                  id = document.cookie.split(";")[1]
+                  id = id.split("=")[1]
+                  console.log(id)
+                  valid = true
+              }catch{
+                  console.log("invalid cookie")
+              }
+
+    </script>
+    
 </head>
 
 <body>
@@ -214,95 +227,132 @@
 </body>
 <script>
   $(document).ready(function(){
+    // Fetch products data from backend
+    fetch("http://localhost:3001/get-products")
+      .then(response => response.json())
+      .then(data => {
+        // Process the data and insert into the table
+        console.log(data)
+        data.forEach(product => {
+          
+          var row =
+            "<tr>" +
+            `<td>${product.book_id}</td>` +
+            `<td>${product.book_ISBN}</td>` +
+            `<td>${product.categories}</td>` +
+            `<td>${product.book_title}</td>` +
+            `<td>${product.author_name}</td>` +
+            `<td>${product.book_publisher_name}</td>` +
+            `<td>${product.book_stock}</td>` +
+            `<td class="w-fit">${new Date(product.book_publish_date).toISOString().split('T')[0]}</td>` +
+            `<td>${product.book_price}</td>` +
+            "<td>" +
+            '<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons"></i></a>' +
+            '<a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons"></i></a>' +
+            '<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons"></i></a>' +
+            "</td>" +
+            "</tr>";
+          $("table tbody").append(row);
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    
+    // Rest of your code remains the same
     $('[rel="tooltip"]').on('click', function () {
       $(this).tooltip('hide')
-    })
+    });
     var actions = $("table td:last-child").html();
-  // Append table with add row form on add new button click
-  $(".add-new").click(function() {
-    $(this).attr("disabled", "disabled");
-    var index = $("table tbody tr:last-child").index();
-    var row =
-      "<tr>" +
-      '<td><input type="text" class="form-control" name="id" id="id"></td>' +
-      '<td><input type="text" class="form-control" name="isbn" id="isbn"></td>' +
-      '<td><input type="text" class="form-control" name="category" id="category"></td>' +
-      '<td><input type="text" class="form-control" name="title" id="title"></td>' +
-      '<td><input type="text" class="form-control" name="author" id="author"></td>' +
-      '<td><input type="text" class="form-control" name="publisher" id="publisher"></td>' +
-      '<td><input type="text" class="form-control" name="quantity" id="quantity"></td>' +
-      '<td><input type="text" class="form-control" name="date" id="date"></td>' +
-      '<td><input type="text" class="form-control" name="price" id="price"></td>' +
-      "<td>" +
-      actions +
-      "</td>" +
-      "</tr>";
-    $("table").append(row);
-    $("table tbody tr")
-      .eq(index + 1)
-      .find(".add, .edit")
-      .toggle();
-    $('[rel="tooltip"]').on('click', function () {
-      $(this).tooltip('hide')
-    })
-  });
-  // Add row on add button click
-  $(document).on("click", ".add", function() {
-    var empty = false;
-    var input = $(this)
-      .parents("tr")
-      .find('input[type="text"]');
-    input.each(function() {
-      if (!$(this).val()) {
-        $(this).addClass("error");
-        empty = true;
-      } else {
-        $(this).removeClass("error");
+    
+    // Add-new button click handler
+    $(".add-new").click(function() {
+      $(this).attr("disabled", "disabled");
+      var index = $("table tbody tr:last-child").index();
+      var row =
+        "<tr>" +
+        '<td><input type="text" class="form-control" name="id" id="id"></td>' +
+        '<td><input type="text" class="form-control" name="isbn" id="isbn"></td>' +
+        '<td><input type="text" class="form-control" name="category" id="category"></td>' +
+        '<td><input type="text" class="form-control" name="title" id="title"></td>' +
+        '<td><input type="text" class="form-control" name="author" id="author"></td>' +
+        '<td><input type="text" class="form-control" name="publisher" id="publisher"></td>' +
+        '<td><input type="text" class="form-control" name="quantity" id="quantity"></td>' +
+        '<td><input type="text" class="form-control" name="date" id="date"></td>' +
+        '<td><input type="text" class="form-control" name="price" id="price"></td>' +
+        "<td>" +
+        actions +
+        "</td>" +
+        "</tr>";
+      $("table").append(row);
+      $("table tbody tr")
+        .eq(index + 1)
+        .find(".add, .edit")
+        .toggle();
+      $('[rel="tooltip"]').on('click', function () {
+        $(this).tooltip('hide')
+      });
+    });
+    
+    // Add row on add button click
+    $(document).on("click", ".add", function() {
+      var empty = false;
+      var input = $(this)
+        .parents("tr")
+        .find('input[type="text"]');
+      input.each(function() {
+        if (!$(this).val()) {
+          $(this).addClass("error");
+          empty = true;
+        } else {
+          $(this).removeClass("error");
+        }
+      });
+      $(this)
+        .parents("tr")
+        .find(".error")
+        .first()
+        .focus();
+      if (!empty) {
+        input.each(function() {
+          $(this)
+            .parent("td")
+            .html($(this).val());
+        });
+        $(this)
+          .parents("tr")
+          .find(".add, .edit")
+          .toggle();
+        $(".add-new").removeAttr("disabled");
       }
     });
-    $(this)
-      .parents("tr")
-      .find(".error")
-      .first()
-      .focus();
-    if (!empty) {
-      input.each(function() {
-        $(this)
-          .parent("td")
-          .html($(this).val());
-      });
+    
+    // Edit row on edit button click
+    $(document).on("click", ".edit", function() {
+      $(this)
+        .parents("tr")
+        .find("td:not(:last-child)")
+        .each(function() {
+          $(this).html(
+            '<input type="text" class="form-control" value="' +
+              $(this).text() +
+              '">'
+          );
+        });
       $(this)
         .parents("tr")
         .find(".add, .edit")
         .toggle();
+      $(".add-new").attr("disabled", "disabled");
+    });
+    
+    // Delete row on delete button click
+    $(document).on("click", ".delete", function() {
+      $(this)
+        .parents("tr")
+        .remove();
       $(".add-new").removeAttr("disabled");
-    }
-  });
-  // Edit row on edit button click
-  $(document).on("click", ".edit", function() {
-    $(this)
-      .parents("tr")
-      .find("td:not(:last-child)")
-      .each(function() {
-        $(this).html(
-          '<input type="text" class="form-control" value="' +
-            $(this).text() +
-            '">'
-        );
-      });
-    $(this)
-      .parents("tr")
-      .find(".add, .edit")
-      .toggle();
-    $(".add-new").attr("disabled", "disabled");
-  });
-  // Delete row on delete button click
-  $(document).on("click", ".delete", function() {
-    $(this)
-      .parents("tr")
-      .remove();
-    $(".add-new").removeAttr("disabled");
-  });
+    });
   });
 </script>
 </html>

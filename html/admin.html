@@ -11,6 +11,100 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
         integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
         crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+
+            try{
+                id = document.cookie.split(";")[1]
+                id = id.split("=")[1]
+                console.log(id)
+            }catch{
+                console.log("invalid cookie")
+            }
+
+            fetch("http://localhost:3001/current-user")
+            .then(response => response.json())
+            .then(data => {
+                
+                data.forEach(admin => {
+                    switch (admin.admin_permission){
+                    case 1:
+                        var role = "Local admin";
+                        break;
+                    case 2:
+                        var role = "head admin";
+                        break;
+                    default:
+                        var role = "Local admin"
+                }
+                    $('#users-list').append(
+                        `<li class="list-group-item list-group-item-secondary" id=${admin.admin_id}>
+                                    <div class="row row-cols-1">
+                                        <div class="col">
+                                            <h1 class="fz-24" id="username">${admin.admin_username}</h1>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col text-start d-flex">
+                                                <h1 class="fz-16 align-self-end" id="permission">${role} | xd</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            <hr>
+                                `
+                        
+                    )
+                })
+            })
+        })
+
+        $(document).ready(function(){
+            fetch("http://localhost:3001/users")
+            .then(response => response.json())
+            .then(data =>{
+                console.log(data)
+                data.forEach(admin =>{
+                    switch (admin.admin_permission){
+                    case 1:
+                        var role = "local admin";
+                        break;
+                    case 2:
+                        var role = "head admin";
+                        break;
+                    default:
+                        var role = "local admin"
+                    
+                }
+                $('#users-list').append(`
+                    <li class="list-group-item list-group-item-secondary" id=${admin.admin_id}>
+                                    <div class="row row-cols-1">
+                                        <div class="col">
+                                            <h1 class="fz-24" id=username>${admin.admin_username}</h1>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col text-start d-flex">
+                                                <h1 class="fz-16 align-self-end">${role} | xd</h1>
+                                            </div>
+                                            <div class="col text-end">
+                                                
+                                                <button class="btn btn-outline-secondary" id=${admin.admin_id}>
+                                                    <img src="/image/admin/edit.png" width="24px" height="24px">
+                                                </button>
+                                                
+                                                
+                                                <button class="btn btn-outline-secondary" id=${admin.admin_id}>
+                                                    <img src="/image/admin/delete.png" class="img-fluid">
+                                                </button>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>`)
+                })
+            })
+        })
+    </script>
 </head>
 
 <body>
@@ -97,57 +191,8 @@
 
                         <!--list of admins-->
                         <div class="col px-5">
-                            <ul class="list-group">
-                                <!--current account-->
-                                <li class="list-group-item list-group-item-secondary">
-                                    <div class="row row-cols-1">
-                                        <div class="col">
-                                            <h1 class="fz-24">Muthitha</h1>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col text-start d-flex">
-                                                <h1 class="fz-16 align-self-end">Local Admin | xd</h1>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <hr>
-                                <!--other accounts-->
-                                <li class="list-group-item list-group-item-secondary">
-                                    <div class="row row-cols-1">
-                                        <div class="col">
-                                            <h1 class="fz-24">Muthitha</h1>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col text-start d-flex">
-                                                <h1 class="fz-16 align-self-end">Local Admin | xd</h1>
-                                            </div>
-                                            <div class="col text-end">
-                                                <button class="btn">
-                                                    <img src="/image/admin/delete.png" class="img-fluid">
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item list-group-item-secondary" >
-                                    <div class="row row-cols-1">
-                                        <div class="col">
-                                            <h1 class="fz-24">Muthitha</h1>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col text-start d-flex">
-                                                <h1 class="fz-16 align-self-end">Local Admin | xd</h1>
-                                            </div>
-                                            <div class="col text-end">
-                                                <button class="btn">
-                                                    <img src="/image/admin/delete.png" class="img-fluid">
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
+                            <ul class="list-group" id="users-list">
+                                
                                 
                             </ul>
 
