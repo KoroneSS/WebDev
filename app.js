@@ -48,5 +48,5 @@ router.get("/admin/product", (req,res) => {
 
 /* Listen */
 app.listen(process.env.FRONTPORT,() =>{
-    console.log(`listening on port ${process.env.FRONTPORT}`)
+    console.log(`frontend listening on port ${process.env.FRONTPORT}`)
 })
