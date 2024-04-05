@@ -64,7 +64,7 @@ router.get("/cart", (req,res) => {
 
 /* Search */
 router.get("/search", (req,res) => {
-    res.status(200).sendFile(path.join(`${__dirname}/html/search-ver.zenny-fixing-rn.html`))
+    res.status(200).sendFile(path.join(`${__dirname}/html/search.html`))
 })
 
 /* Admin */
