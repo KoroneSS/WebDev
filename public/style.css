@@ -310,3 +310,166 @@ table.table .form-control.error {
 table.table td .add {
   display: none;
 }
+
+/* search */
+
+ul.clearfix {
+  list-style: none;
+  margin-left: 218px;
+}
+
+.fl {
+  float: left !important;
+}
+
+#contactBox ul li {
+  margin-right: 20px;
+}
+
+#form dl {
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+#form dl dt {
+  float: left;
+}
+#form dl dd span {
+  font-size: 12px;
+  padding-left: 5px;
+}
+
+#line  {
+  border-bottom: 1px solid #cccccc;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+
+.mb30 {
+  margin-bottom: 30px !important;
+}
+
+dd {
+  display: block;
+  margin-inline-start: 40px;
+  unicode-bidi: isolate;
+}
+
+#subContents dl.first {
+  border-top: #efefef 1px solid;
+  margin-bottom: 1px;
+}
+#subContents dl {
+  height: 46px;
+  border-bottom: #efefef 1px solid;
+  overflow: hidden;
+  margin-bottom: 1px;
+}
+
+#subContents dl dt,
+#subContents dl dd {
+  font-size: 12px;
+}
+#subContents dl dt {
+  background: #efefef;
+  width: 240px;
+  height: 50px;
+}
+#subContents dl dt {
+  padding-left: 25px;
+  line-height: 4;
+}
+#subContents dl dd {
+  padding-left: 8px;
+  margin-right: 45px;
+}
+#subContents dl dd {
+  padding-left: 10px;
+  margin-right: 0;
+}
+
+#subContents {
+  margin-left: 40px;
+}
+
+.catTtl {
+  border-bottom: #EFEFEF 1px solid;
+  margin-top: 20px;
+  margin-left: 20px;  
+  margin-bottom: 0;
+  padding-bottom: 15px;
+}
+
+.note{
+  margin-top: 15px;
+}
+
+#form .btnSearch {
+  background: #89B6E3;
+  border: medium none;
+  color: #000;
+  cursor: pointer;
+  height: 40px;
+  width: 420px;
+  border-radius: 0;
+}
+
+#form .btnClear {
+  background: #CCCCCC;
+  border: medium none;
+  color: #000;
+  cursor: pointer;
+  height: 40px;
+  width: 140px;
+  border-radius: 0;
+}
+
+input[type="submit"], input[type="button"] {
+  padding: 3px 10px;
+  border-radius: 0;
+}
+
+#form .categorySearchSelect{
+  width: 420px;
+  border-bottom: #CCC 1px solid;
+  margin: 10px 0 0 10px;
+}
+
+#form .selectBox {
+  width: 100px;
+  height: 25px;
+  border-bottom: #CCC 1px solid;
+  margin: 10px 0 0 10px;
+}
+
+#form input[type="text"], #form input[type="email"] {
+  width: 420px;
+  margin: 10px 0 0 10px;
+  height: 25px;
+}
+
+input[type="text"], input[type="email"], input[type="password"], input[type="tel"], textarea {
+  border: 1px solid #ccc;
+  padding: 2px;
+  background: #fff;
+  border-radius: 0;
+}
+
+input[type="checkbox" i] {
+  background-color: initial;
+  cursor: default;
+  appearance: auto;
+  box-sizing: border-box;
+  margin: 15px;
+  padding: initial;
+  border: initial;
+}
+
+#wrap{
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+#contactBox{
+  padding-right: 20px;
+}
