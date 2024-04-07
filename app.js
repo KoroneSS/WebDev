@@ -76,7 +76,9 @@ router.get("/admin/product", (req,res) => {
     res.status(200).sendFile(path.join(`${__dirname}/html/admin-product.html`))
 })
 
-
+router.get("/error", (req,res) =>{
+    res.status(200).sendFile(path.join(`${__dirname}/html/signin.html`))
+})
 
 
 /* Listen */

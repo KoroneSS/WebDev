@@ -14,16 +14,27 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function(){
-
+            var id = 0;
             try{
                 id = document.cookie.split(";")[1]
                 id = id.split("=")[1]
                 console.log(id)
             }catch{
-                console.log("invalid cookie")
+                
+            }
+            if(id == undefined){
+                console.log("yes")
+                window.location.href = "http://localhost:3000/signin"
             }
 
-            fetch("http://localhost:3001/current-user")
+            fetch("http://localhost:3001/current-user",
+                    {
+                    method: "POST",
+                    body: JSON.stringify({uid:id}),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                    }       )
             .then(response => response.json())
             .then(data => {
                 

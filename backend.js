@@ -56,9 +56,11 @@ app.get("/get-products", (req,res) => {
     })
 })
 
-app.get("/current-user", (req,res)=>{
-    let sql = `SELECT * FROM \`Admin\``
-    connection.query(sql,(err,result)=>{
+app.post("/current-user", (req,res)=>{
+    var id = req.body.uid;
+    console.log(id);
+    let sql = `SELECT * FROM \`Admin\` a WHERE a.admin_id = ?`
+    connection.query(sql,[id],(err,result)=>{
         if (err) throw err;
         res.status(200).json(result);
     })
