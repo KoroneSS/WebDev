@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+        integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            /*
+            try {
+                var id = 0;
+
+                id = document.cookie.split(";")[1]
+                id = id.split("=")[1]
+                console.log("id" + id)
+            } catch {
+                window.location.href = "http://localhost:3000/signin"
+            }
+            */
+
+            $(document).ready(function () {
+                $('form').submit(function (event) {
+                    event.preventDefault(); // Prevent the default form submission
+
+                    // Get the form data
+                    var formData = {
+                        username: $('#username').val(),
+                        password: $('#password').val()
+                    };
+
+                    // Send a POST request to your backend endpoint
+                    fetch('http://localhost:3001/user', {
+                        method: 'POST',
+                        body: JSON.stringify(formData),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data.error){
+                                window.alert(data.message)
+                            }
+                            else{
+                                window.alert(data.message)
+                                window.location.href = "http://localhost:3000/admin"
+                            }
+                            
+                        })
+                        .catch(error => {
+                            console.error('Error creating user:', error);
+                            window.alert(response.message);
+                        });
+                });
+            });
+        })
+    </script>
+</head>
+
+<body>
+    <!--nav bar-->
+    <nav class="navbar navbar-expand-lg bg-customblue">
+        <div class="container-fluid">
+            <a class="navbar-brand fz-24 ps-5" href="/">PEARL LOVE FAHFAH</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav justify-content-center ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link fz-24" href="/">
+                            <img src="/image/navbarImages/home.png" alt="home" class="w-5 h-5 mr-1">
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/search">
+                            <img src="/image/navbarImages/search.png" alt="search" class="w-5 h-5">
+                            Search
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/aboutus">
+                            <img src="/image/navbarImages/aboutus.png" alt="aboutus" class="w-5 h-5">
+                            About Us
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cart">
+                            <img src="/image/navbarImages/cart.png" alt="cart" class="w-5 h-5">
+                            Cart
+                        </a>
+                    </li>
+                    <form action="/signin" method="" class="pl-4">
+                        <button id="signin" class="btn btn-dark">Sign in</button>
+                    </form>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!--admin info-->
+
+    <div class="container-fluid h-auto py-5 d-flex bg-customgray">
+        <div class="admincontainer w-75 mx-auto">
+            <div class="row">
+                <!--left side of admin-->
+                <div class="col-4 adminbox h-100">
+                    <div class="row row-cols-1 my-4">
+                        <div class="col text-center">
+                            <img src="/image/admin/admin.png" class="img-fluid" width="200px" height="200px">
+                        </div>
+                        <div class="col text-center my-4">
+                            <h1 class="fz-24">Hi</h1>
+                            <h1 class="fz-16">Admin</h1>
+                        </div>
+
+                        <a href="/admin" class="text-decoration-none link-dark">
+                            <div class="col d-grid">
+                                <button class="btn"
+                                    style="--bs-btn-hover-bg: #D9D9D9; text-align: left; padding-left: 2rem;   font-family: 'Poppins', sans-serif;">Administration
+                                </button>
+                            </div>
+                        </a>
+                        <a href="/admin/product" class="text-decoration-none link-dark">
+                            <div class="col d-grid">
+                                <button class="btn"
+                                    style="--bs-btn-hover-bg: #D9D9D9; text-align: left; padding-left: 2rem;   font-family: 'Poppins', sans-serif;">Product
+                                    Management
+                                </button>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!--right side of admin-->
+                <div class="col-7 adminbox ms-auto pb-4">
+                    <div class="row row-cols-1">
+                        <div class="col py-4 px-4">
+                            <img src="/image/admin/adminicon.png" class="img-fluid" style="padding-left: 2vw;">
+                            <h1 class="fz-24 d-inline-block">Administration</h1>
+                        </div>
+
+                        <!-- admin creation-->
+                        <div class="col px-5">
+                            <form action="/createuser" method="POST">
+
+                                <div class="form-floating mb-3">
+                                    <input class="form-control inputbox" id="username" placeholder="Username"
+                                        name="username">
+                                    <label for="username">Username</label>
+                                </div>
+                                <!--Password Input-->
+                                <div class="form-floating mb-1">
+                                    <input id="password" class="form-control inputbox" placeholder="Password"
+                                        name="password">
+                                    <label for="password">Password</label>
+                                </div>
+
+                                <div class="row py-3 px-5 mx-auto">
+                                    <button type="submit" class="btn btn-info" style="--bs-btn-font-weight: 700;"
+                                        name="create" value="create">Confirm New Account Creation</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--footer-->
+    <div class="container-fluid bg-customblue pt-4">
+        <div class="row justify-content-center mx-auto">
+            <div class="col col-3 text-left">
+                <h1 class="fz-24 mb-2">PEARL LOVE FAH FAH</h1>
+                <h3 class="fz-16">Faculty of Information and</h3>
+                <h3 class="fz-16">Communication Technology (ICT),</h3>
+                <h3 class="fz-16">Mahidol University</h3>
+            </div>
+            <div class="col col-6">
+                <h1 class="fz-24">Contact Us</h1>
+                <div class="row row-cols-2">
+                    <div class="col">
+                        <img src="/image/footerImages/facebook.png" alt="facebook" width="37px" height="37px">
+                        <h1 class="fz-16 pl-2 d-inline-block">PEARL LOVE FAHFAH Co., Ltd.</h1>
+                    </div>
+                    <div class="col">
+                        <img src="/image/footerImages/phone.png" alt="phone" width="37px" height="37px">
+                        <h1 class="fz-16 pl-2 d-inline-block">08x-xxx-xxxx</h1>
+                    </div>
+                    <div class="col">
+                        <img src="/image/footerImages/ig.png" alt="ig" width="37px" height="37px">
+                        <h1 class="fz-16 pl-2 d-inline-block">PearlLoveFahFah</h1>
+                    </div>
+                    <div class="col">
+                        <img src="/image/footerImages/email.png" alt="email" width="37px" height="37px">
+                        <h1 class="fz-16 pl-2 d-inline-block">PearlLoveFahFah@gmail.com</h1>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <hr class="hr w-75 justify-content-center mx-auto">
+        <div class="row justify-content-center mx-auto pb-3">
+            <div class="col-6 ">
+                <h3 class="fz-16 d-inline-block">999 Phutthamonthon Sai 4 Rd, Salaya, Phutthamonthon District, Nakhon
+                    Pathom 73170</h3>
+            </div>
+            <div class="col-3">
+                <h3 class="fz-16 d-inline-block pe-3">Privacy Policy</h3>
+                <h3 class="fz-16 d-inline-block">Terms and Conditions</h3>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+
+</html>

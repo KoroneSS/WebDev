@@ -38,7 +38,7 @@ router.post("/login", (req,res) => {
     .then(data =>{
         if(data.valid){
             
-            res.cookie("id", data.id,{maxAge:9000})
+            res.cookie("id", data.id,{maxAge:900000})
             res.redirect("/admin")
         }
         else{
@@ -75,6 +75,11 @@ router.get("/admin", (req,res) => {
 router.get("/admin/product", (req,res) => {
     res.status(200).sendFile(path.join(`${__dirname}/html/admin-product.html`))
 })
+
+router.get("/admin-create" , (req,res) => {
+    res.status(200).sendFile(path.join(`${__dirname}/html/admin-create.html`))
+})
+
 
 router.get("/error", (req,res) =>{
     res.status(200).sendFile(path.join(`${__dirname}/html/signin.html`))

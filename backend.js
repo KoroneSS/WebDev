@@ -76,11 +76,13 @@ app.get("/users", (req,res)=>{
 
 app.post("/getperm", (req,res)=>{
     var id = req.body.uid;
-    console.log(id);
-    let sql = `SELECT * FROM \`Admin\` a WHERE a.admin_id = ?`
+    console.log(`perm id = ${id}`);
+    let sql = `SELECT a.admin_permission FROM \`Admin\` a WHERE a.admin_id = ?`
     connection.query(sql,[id],(err,result)=>{
         if (err) throw err;
-        res.status(200).json(result.admin_permission);
+        console.log(`perm result = ${result}`)
+        res.status(200).json(result);
+        
     })
 })
 
@@ -102,6 +104,35 @@ app.post('/auth', (req,res) => {
     })
 })
 
+app.post('/user', (req,res) =>{
+    var username = req.body.username
+    var password = req.body.password
+    console.log(`${username} ${password}`)
+    if(!username || !password){
+        return  res.status(400).send({error: true, message:'Please provide username and password'})
+    }
+    let sql = 'INSERT INTO \`Admin\` (admin_username,admin_password, admin_permission) VALUES (?,?,1)'
+    connection.query(sql, [username,password], (err, result) =>{
+        if (err) throw err;
+        return res.send({error:false, data: result.affectedRows, message:"New user has been created successfully"});
+    })
+
+})
+
+app.delete("/user", (req,res) =>{
+    var id = req.body.id
+    console.log(id)
+
+    if(!id){
+        return res.status(400).send({error:true, message:"id is not valid"})
+
+    }
+    let sql = 'DELETE FROM \`Admin\` a Where a.admin_id = ?'
+    connection.query(sql,[id],(err,result) => {
+        if (err) throw err;
+        return res.send({error:false, data:result.affectedRows, message:"Successfully deleted"})
+    })
+})
 
 app.listen(process.env.ENDPORT, () =>{
     console.log(`backend listening on port ${process.env.ENDPORT}`)
