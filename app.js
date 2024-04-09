@@ -22,7 +22,7 @@ router.get("/",(req,res) => {
 router.get("/signin", (req,res) => {
     res.status(200).sendFile(path.join(`${__dirname}/html/signin.html`))
 })
-
+/*
 router.post("/login", (req,res) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -49,7 +49,14 @@ router.post("/login", (req,res) => {
 
     
 })
+*/
 
+router.post("/setcookie",(req,res) =>{
+    let id = req.body.id
+    
+    res.cookie("id", id, {maxAge:900000})
+    
+})
 
 /* About Us */
 router.get("/aboutus", (req,res) => {

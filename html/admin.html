@@ -15,7 +15,7 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function () {
-            /*
+            
             try {
                 var id = 0;
                 console.log(document.cookie)
@@ -23,9 +23,10 @@
                 id = id.split("=")[1]
                 console.log("id" + id)
             } catch {
+                window.alert(document.cookie)
                 window.location.href = "http://localhost:3000/signin"
             }
-            */
+            
 
 
             fetch("http://localhost:3001/current-user",

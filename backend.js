@@ -87,8 +87,8 @@ app.post("/getperm", (req,res)=>{
 })
 
 app.post('/auth', (req,res) => {
-    var username = req.body.user
-    var password = req.body.pw
+    var username = req.body.username
+    var password = req.body.password
     let sql = `SELECT * FROM \`Admin\` WHERE admin_username = ? AND admin_password = ?`;
     connection.query(sql, [username,password], (err, result) =>{
         if (err) {
