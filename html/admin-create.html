@@ -15,7 +15,7 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function () {
-            /*
+
             try {
                 var id = 0;
 
@@ -25,7 +25,9 @@
             } catch {
                 window.location.href = "http://localhost:3000/signin"
             }
-            */
+            if (!id) {
+                window.location.href = "http://localhost:3000/signin"
+            }
 
 
             $('form').submit(function (event) {
@@ -62,6 +64,11 @@
                     });
             });
 
+            $(document).on('click', '#logout', function () {
+                document.cookie = "id=; path=/";
+                window.alert("Logged out");
+                window.location.href = "http://localhost:3000/signin"
+            });
         })
     </script>
 </head>
@@ -140,6 +147,12 @@
                                 </button>
                             </div>
                         </a>
+                        <div class="col d-grid ps-4 pt-4">
+                            <button class="btn btn-dark w-fit"
+                                style="text-align: left;   font-family: 'Poppins', sans-serif;" id="logout">
+                                Logout
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <!--right side of admin-->

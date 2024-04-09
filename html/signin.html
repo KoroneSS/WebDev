@@ -15,6 +15,15 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function (){
+            try {
+                id = document.cookie.split(";")[1]
+                id = id.split("=")[1]
+                console.log("id" + id)
+                if(id){
+                window.location.href = "http://localhost:3000/admin"
+                }
+            } catch {
+            }
             $('form').submit(function(event){
                 event.preventDefault();
                 var formData= {
