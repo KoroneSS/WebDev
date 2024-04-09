@@ -38,7 +38,7 @@ router.post("/login", (req,res) => {
     .then(data =>{
         if(data.valid){
             
-            res.cookie("id", data.id, {maxAge:9000})
+            res.cookie("id", data.id,{maxAge:9000})
             res.redirect("/admin")
         }
         else{

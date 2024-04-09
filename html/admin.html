@@ -15,15 +15,25 @@
     <script>
         $(document).ready(function(){
             var id = 0;
-            try{
-                id = document.cookie.split(";")[1]
-                id = id.split("=")[1]
-                console.log(id)
-            }catch{
+
+            id = document.cookie.split(";")[1]
+            id = id.split("=")[1]
+            console.log(id)
                 
-            }
+            var perm;
+
+            fetch('http://localhost:3001/getperm',
+        {
+            method: "POST",
+            body: {uid:id}
+        })
+            .then(response => response.json())
+            .then(data => {
+                perm = data;
+            })
+            console.log(perm)
             if(id == undefined){
-                console.log("yes")
+    
                 window.location.href = "http://localhost:3000/signin"
             }
 
@@ -49,6 +59,7 @@
                     default:
                         var role = "Local admin"
                 }
+            
                     $('#users-list').append(
                         `<li class="list-group-item list-group-item-secondary" id=${admin.admin_id}>
                                     <div class="row row-cols-1">
@@ -87,6 +98,7 @@
                         var role = "local admin"
                     
                 }
+                
                 $('#users-list').append(`
                     <li class="list-group-item list-group-item-secondary" id=${admin.admin_id}>
                                     <div class="row row-cols-1">
@@ -99,12 +111,12 @@
                                             </div>
                                             <div class="col text-end">
                                                 
-                                                <button class="btn btn-outline-secondary" id=${admin.admin_id}>
+                                                <button class="btn btn-outline-secondary ${buttondisplay}" id=${admin.admin_id}>
                                                     <img src="/image/admin/edit.png" width="24px" height="24px">
                                                 </button>
                                                 
                                                 
-                                                <button class="btn btn-outline-secondary" id=${admin.admin_id}>
+                                                <button class="btn btn-outline-secondary ${buttondisplay}" id=${admin.admin_id}>
                                                     <img src="/image/admin/delete.png" class="img-fluid">
                                                 </button>
                                                

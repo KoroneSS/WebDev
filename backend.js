@@ -74,6 +74,16 @@ app.get("/users", (req,res)=>{
     })
 })
 
+app.post("/getperm", (req,res)=>{
+    var id = req.body.uid;
+    console.log(id);
+    let sql = `SELECT * FROM \`Admin\` a WHERE a.admin_id = ?`
+    connection.query(sql,[id],(err,result)=>{
+        if (err) throw err;
+        res.status(200).json(result.admin_permission);
+    })
+})
+
 app.post('/auth', (req,res) => {
     var username = req.body.user
     var password = req.body.pw
@@ -84,7 +94,7 @@ app.post('/auth', (req,res) => {
             res.status(500).json({ error: 'Internal Server Error'});
         }else{
             if(result.length > 0){
-                res.status(200).json({valid:true, id:result[0].admin_id})
+                res.status(200).json({valid:true, id:result[0].admin_id, perm:result[0].admin_permission})
             }else{
                 res.status(200).json({valid:false})
             }
