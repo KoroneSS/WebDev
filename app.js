@@ -87,6 +87,9 @@ router.get("/admin-create" , (req,res) => {
     res.status(200).sendFile(path.join(`${__dirname}/html/admin-create.html`))
 })
 
+router.get("/admin-edit", (req,res) => {
+    res.status(200).sendFile(path.join(`${__dirname}/html/admin-edit.html`))
+})
 
 router.get("/error", (req,res) =>{
     res.status(200).sendFile(path.join(`${__dirname}/html/signin.html`))

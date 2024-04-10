@@ -109,7 +109,7 @@
                                             </div>
                                             <div class="col text-end">
                                                 
-                                                <button class="btn btn-outline-secondary" id=${admin.admin_id}>
+                                                <button class="btn btn-outline-secondary edit-btn" id=${admin.admin_id}>
                                                     <img src="/image/admin/edit.png" width="24px" height="24px">
                                                 </button>
                                                 
@@ -126,6 +126,32 @@
                 })
 
             $(document).on('click', '.delete-btn', function () {
+                var adminId = $(this).attr('id');
+                // Send a DELETE request to your backend endpoint
+                if(adminId == id){
+                    window.aelrt("You cannot delete yourself!")
+                    return
+                }
+                fetch(`http://localhost:3001/user`, {
+                    method: 'DELETE',
+                    body: JSON.stringify({id:adminId}),
+                    headers: {
+                    "Content-Type": "application/json"
+                }
+                })
+                    .then(response => {
+                        // Remove the deleted admin's row from the UI
+                        $(`#${adminId}`).remove();
+                        window.alert("removed successfully")
+                    })
+                    .catch(error => {
+                        // Handle error
+                        console.error('Error deleting admin:', error);
+                        window.alert('Error deleting admin. Please try again.');
+                    });
+            });
+
+            $(document).on('click', '.edit-btn', function () {
                 var adminId = $(this).attr('id');
                 // Send a DELETE request to your backend endpoint
                 fetch(`http://localhost:3001/user`, {
