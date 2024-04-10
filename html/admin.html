@@ -15,9 +15,9 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function () {
-            
+            var id;
             try {
-                var id = 0;
+
                 console.log(document.cookie)
                 id = document.cookie.split(";")[1]
                 id = id.split("=")[1]
@@ -26,41 +26,41 @@
                 window.alert(document.cookie)
                 window.location.href = "http://localhost:3000/signin"
             }
-            
-            if(!id){
+
+            if (!id) {
                 window.location.href = "http://localhost:3000/signin"
+            } else {
+                $('#signin').text('Logged in');
             }
 
-        
 
-            fetch("http://localhost:3001/current-user",
+
+
+            fetch(`http://localhost:3001/user/${id}`,
                 {
-                    method: "POST",
-                    body: JSON.stringify({ uid: id }),
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
+                    method: "GET",
+
                 })
                 .then(response => response.json())
                 .then(data => {
 
-                    data.forEach(admin => {
-                        switch (admin.admin_permission) {
-                            case 1:
-                                var role = "Local admin";
-                                break;
-                            case 2:
-                                var role = "head admin";
-                                break;
-                            default:
-                                var role = "Local admin"
-                        }
-
-                        $('#users-list').append(
-                            `<li class="list-group-item list-group-item-secondary" id=${admin.admin_id}>
+                    switch (data[0].admin_permission) {
+                        case 1:
+                            var role = "Local admin";
+                            break;
+                        case 2:
+                            var role = "head admin";
+                            break;
+                        default:
+                            var role = "Local admin"
+                    }
+                    $('#adminname').text(data[0].admin_username)
+                    $('#adminrole').text(role)
+                    $('#users-list').append(
+                        `<li class="list-group-item list-group-item-secondary" id=${data[0].admin_id}>
                                     <div class="row row-cols-1">
                                         <div class="col">
-                                            <h1 class="fz-24" id="username">${admin.admin_username}</h1>
+                                            <h1 class="fz-24" id="username">${data[0].admin_username}</h1>
                                         </div>
                                         <div class="row">
                                             <div class="col text-start d-flex">
@@ -72,32 +72,26 @@
                             <hr>
                                 `
 
-                        )
-                    })
-                })
+                    )
 
+                    fetch("http://localhost:3001/users")
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data)
+                            data.forEach(admin => {
+                                switch (admin.admin_permission) {
+                                    case 1:
+                                        var role = "local admin";
+                                        break;
+                                    case 2:
+                                        var role = "head admin";
+                                        break;
+                                    default:
+                                        var role = "local admin"
 
-        })
+                                }
 
-        $(document).ready(function () {
-            fetch("http://localhost:3001/users")
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data)
-                    data.forEach(admin => {
-                        switch (admin.admin_permission) {
-                            case 1:
-                                var role = "local admin";
-                                break;
-                            case 2:
-                                var role = "head admin";
-                                break;
-                            default:
-                                var role = "local admin"
-
-                        }
-
-                        $('#users-list').append(`
+                                $('#users-list').append(`
                     <li class="list-group-item list-group-item-secondary" id=${admin.admin_id}>
                                     <div class="row row-cols-1">
                                         <div class="col">
@@ -122,55 +116,46 @@
                                         </div>
                                     </div>
                                 </li>`)
-                    })
+                            })
+                        })
                 })
+
+
 
             $(document).on('click', '.delete-btn', function () {
                 var adminId = $(this).attr('id');
                 // Send a DELETE request to your backend endpoint
-                if(adminId == id){
-                    window.aelrt("You cannot delete yourself!")
+                console.log("hi")
+                if (adminId == id) {
+                    window.alert("You cannot delete yourself!");
                     return
                 }
-                fetch(`http://localhost:3001/user`, {
-                    method: 'DELETE',
-                    body: JSON.stringify({id:adminId}),
-                    headers: {
-                    "Content-Type": "application/json"
-                }
-                })
-                    .then(response => {
-                        // Remove the deleted admin's row from the UI
-                        $(`#${adminId}`).remove();
-                        window.alert("removed successfully")
+                else {
+                    fetch(`http://localhost:3001/user`, {
+                        method: 'DELETE',
+                        body: JSON.stringify({ id: adminId }),
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
                     })
-                    .catch(error => {
-                        // Handle error
-                        console.error('Error deleting admin:', error);
-                        window.alert('Error deleting admin. Please try again.');
-                    });
+                        .then(response => {
+                            // Remove the deleted admin's row from the UI
+                            $(`#${adminId}`).remove();
+                            window.alert("removed successfully")
+                        })
+                        .catch(error => {
+                            // Handle error
+                            console.error('Error deleting admin:', error);
+                            window.alert('Error deleting admin. Please try again.');
+                        });
+                }
+
             });
 
             $(document).on('click', '.edit-btn', function () {
                 var adminId = $(this).attr('id');
                 // Send a DELETE request to your backend endpoint
-                fetch(`http://localhost:3001/user`, {
-                    method: 'DELETE',
-                    body: JSON.stringify({id:adminId}),
-                    headers: {
-                    "Content-Type": "application/json"
-                }
-                })
-                    .then(response => {
-                        // Remove the deleted admin's row from the UI
-                        $(`#${adminId}`).remove();
-                        window.alert("removed successfully")
-                    })
-                    .catch(error => {
-                        // Handle error
-                        console.error('Error deleting admin:', error);
-                        window.alert('Error deleting admin. Please try again.');
-                    });
+                window.location.href = `/admin-edit/${adminId}`;
             });
 
             $(document).on('click', '#logout', function () {
@@ -236,8 +221,8 @@
                             <img src="/image/admin/admin.png" class="img-fluid" width="200px" height="200px">
                         </div>
                         <div class="col text-center my-4">
-                            <h1 class="fz-24">Hi</h1>
-                            <h1 class="fz-16">Admin</h1>
+                            <h1 class="fz-24" id="adminname">Hi</h1>
+                            <h1 class="fz-16" id="adminrole">Admin</h1>
                         </div>
 
                         <a href="/admin" class="text-decoration-none link-dark">

@@ -11,11 +11,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
         integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
         crossorigin="anonymous"></script>
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             try {
                 var id = 0;
 
@@ -27,10 +29,20 @@
             }
             if (!id) {
                 window.location.href = "http://localhost:3000/signin"
-            }else{
+            } else {
                 $('#signin').text('Logged in');
             }
+            $('#author_id').on('input', function () {
+                var authorId = $(this).val();
+                console.log('Author ID changed by clicking arrows. Author ID: ' + authorId);
+            });
+            $(function () {
+                $("#book_publish_date").datepicker({
+                    dateFormat: 'yy-mm-dd' // MySQL date format
+                });
+            });
         })
+
     </script>
 </head>
 
@@ -77,43 +89,127 @@
             </div>
         </div>
     </nav>
-
-    <!--about us-->
-    <div class="container-fluid h-auto py-5 d-flex bg-customgray">
-        <div class="aboutus align-self-center mx-auto w-75">
-            <h1 clas="fz-48">About Us</h1>
-            <hr class="hr mb-4">
-            <p class="text-break fz-24 mb-5">We are a passionate group of individuals committed to advancing the existing BookWeb community with greater resources, more services, networking and facilities for our existing members. Its our obligation to maintain our standards of excellence and strive for continuous improvement at no additional costs. Stay tuned for the upcoming improvements sometime soon.</p>
+    <!--product add-->
+    <div class="container-fluid h-auto py-5 d-flex bg-customgray justify-content-center">
+        <div class="formcontainer w-75">
             <div class="row">
-                <div class="col">
-                    <div class="aboutusbox pt-4 pb-1 rounded">
-                        <img src="/image/aboutus/pavit.png" class="w-75 h-75 mx-auto d-block mb-3">
-                        <h1 class="fz-16 text-center">Pavit Lertpiromlak</h1>
+                <h1 class="fz-48">Product Creation</h1>
+            </div>
+
+            <!--book part-->
+            <div class="row mb-3">
+                <h1 class="fz-24">Book</h1>
+            </div>
+            <div class="row mb-3">
+                <div class="col-2">
+                    <div class="form-floating">
+                        <input class="form-control" id="book_id" placeholder="">
+                        <label class="form-label" for="book_id">Book ID</label>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="aboutusbox pt-4 pb-1 rounded">
-                        <img src="/image/aboutus/pavit.png" class="w-75 h-75 mx-auto d-block mb-3">
-                        <h1 class="fz-16 text-center">Kasama Kiatapakul</h1>
+                <div class="col-2">
+                    <div class="form-floating">
+                        <input class="form-control" id="book_isbn" placeholder="">
+                        <label class="form-label" for="book_isbn">Book ISBN</label>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="aboutusbox pt-4 pb-1 rounded">
-                        <img src="/image/aboutus/pavit.png" class="w-75 h-75 mx-auto d-block mb-3">
-                        <h1 class="fz-16 text-center">Muthita Pakdeemonthon</h1>
+                <div class="col-5">
+                    <div class="form-floating">
+                        <input class="form-control" id="book_title" placeholder="">
+                        <label class="form-label" for="book_title">Book Title</label>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="aboutusbox pt-4 pb-1 rounded">
-                        <img src="/image/aboutus/pavit.png" class="w-75 h-75 mx-auto d-block mb-3">
-                        <h1 class="fz-16 text-center">Nintawa Kenyota</h1>
+            </div>
+            <div class="row mb-3">
+                <div class="col-2">
+
+                    <input class="form-control" type="text" id="book_publish_date" placeholder="Book Publish Date">
+
+                </div>
+                <div class="col-3">
+                    <div class="form-floating">
+                        <input class="form-control" id="book_publisher_name" placeholder="">
+                        <label class="form-label" for="book_publisher_name">Book Publisher Name</label>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="aboutusbox pt-4 pb-1 rounded">
-                        <img src="/image/aboutus/pavit.png" class="w-75 h-75 mx-auto d-block mb-3">
-                        <h1 class="fz-16 text-center">Chaiyakrit Pokawanit</h1>
+                <div class="col-2">
+                    <div class="form-floating">
+                        <input class="form-control" type="number" id="stock" min="0" placeholder="" />
+                        <label class="form-label" for="stock">Quantity</label>
                     </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-floating">
+                        <input class="form-control" type="number" id="price" min="0" step="0.1" placeholder="" />
+                        <label class="form-label" for="price">Price</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="form-floating">
+                        <textarea class="form-control" id="book_detail" placeholder=""></textarea>
+                        <label class="form-label" for="book_detail">Book Detail</label>
+                    </div>
+                </div>
+            </div>
+            <!--author part-->
+            <div class="row mb-3">
+                <h1 class="fz-24">Author</h1>
+            </div>
+            <div class="row mb-3">
+                <div class="col-2">
+                    <div class="form-floating">
+                        <input class="form-control" id="author_id" type="number" min="1" placeholder="">
+                        <label class="form-label" for="author_id">Author ID</label>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-floating">
+                        <input class="form-control" id="author_fname" placeholder="" readonly>
+                        <label class="form-label" for="author_fname">Author First Name</label>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-floating">
+                        <input class="form-control" id="author_lname" placeholder="" readonly>
+                        <label class="form-label" for="author_lname">Author Last Name</label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-floating">
+                        <input class="form-control" id="author_nationality" placeholder="" readonly>
+                        <label class="form-label" for="author_nationality">Author Nationality</label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-floating">
+                        <input class="form-control" id="author_type" placeholder="" readonly>
+                        <label class="form-label" for="author_type">Author type</label>
+                    </div>
+                </div>
+            </div>
+             <!--category part-->
+            <div class="row mb-3">
+                <h1 class="fz-24">Category</h1>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="form-floating">
+                        <input class="form-control" id="category" placeholder="">
+                        <label class="form-label" for="category">Book Category (separate category with ",") ex. "Romance, Comedy"</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col text-start">
+                    <a href="/admin/product">
+                        <button id="productaddbutton" class="btn btn-primary">Back</button>
+                    </a>
+                </div>
+                <div class="col text-end">
+                    <button id="productaddbutton" class="btn btn-primary">Add Product</button>
                 </div>
             </div>
         </div>

@@ -25,7 +25,7 @@ connection.connect((err) =>{
     console.log(`connected DB: ${process.env.DATABASE}`)
 })
 
-app.get("/get-products", (req,res) => {
+app.get("/products", (req,res) => {
     let sql = `SELECT
     b.book_id,
     b.book_ISBN,
@@ -56,15 +56,7 @@ app.get("/get-products", (req,res) => {
     })
 })
 
-app.post("/current-user", (req,res)=>{
-    var id = req.body.uid;
-    console.log(id);
-    let sql = `SELECT * FROM \`Admin\` a WHERE a.admin_id = ?`
-    connection.query(sql,[id],(err,result)=>{
-        if (err) throw err;
-        res.status(200).json(result);
-    })
-})
+
 
 app.get("/users", (req,res)=>{
     let sql = `SELECT * FROM \`Admin\``
@@ -104,6 +96,16 @@ app.post('/auth', (req,res) => {
     })
 })
 
+app.get("/user/:id", (req,res)=>{
+    var id = req.params.id;
+    console.log(id);
+    let sql = `SELECT * FROM \`Admin\` a WHERE a.admin_id = ?`
+    connection.query(sql,id,(err,result)=>{
+        if (err) throw err;
+        res.status(200).json(result);
+    })
+})
+
 app.post('/user', (req,res) =>{
     var username = req.body.username
     var password = req.body.password
@@ -130,9 +132,96 @@ app.delete("/user", (req,res) =>{
     let sql = 'DELETE FROM \`Admin\` a Where a.admin_id = ?'
     connection.query(sql,[id],(err,result) => {
         if (err) throw err;
-        return res.send({error:false, data:result.affectedRows, message:"Successfully deleted"})
+        return res.send({error:false, data:result.affectedRows, message:"Successfully Deleted!"})
     })
 })
+
+app.put("/user", (req,res) =>{
+    var id = req.body.id
+    var username = req.body.username
+    var password = req.body.password
+    if(!id){
+        return res.status(400).send({error:true, message:"id is not valid"})
+
+    }
+    let sql = 'UPDATE \`Admin\` a SET a.admin_username = ?, a.admin_password = ? WHERE a.admin_id = ?'
+    connection.query(sql,[username,password,id], (err,result) => {
+        if(err) throw err;
+        return res.send({error:false, data:result.affectedRows, message:"Successfully Updated!"})
+    })
+
+})
+app.get("/product/:id", (req,res) => {
+    var id = req.params.id;
+    
+    let sql = `SELECT
+    b.book_id,
+    b.book_ISBN,
+    b.book_title,
+    b.book_publish_date,
+    b.book_publisher_name,
+    b.book_stock,
+    b.book_detail,
+    b.book_price,
+    b.book_discount_percentage,
+    GROUP_CONCAT(c.category_name SEPARATOR ', ') AS categories,
+    CONCAT(MAX(a.author_fname), " ", MAX(a.author_lname)) as author_name
+    FROM
+        Book b
+    JOIN
+        Book_Category bc ON b.book_id = bc.book_id
+    JOIN
+        Category c ON bc.category_id = c.category_id
+    JOIN
+        \`Write\` w ON b.book_id = w.book_id
+    JOIN
+        Author a ON w.author_id = a.author_id
+    WHERE
+		b.book_id = ?
+    GROUP BY
+        b.book_id;`;
+    connection.query(sql, id,(err, result) =>{
+        if (err) throw err;
+        res.status(200).json(result);
+    })
+})
+
+app.post("/product", (req,res) =>{
+    var book_id = req.body.book_id
+    var book_isbn = req.body.book_isbn
+    var category_name 
+})
+app.delete("/product", (req, res) => {
+    var id = req.body.bid;
+    if (!id) {
+        return res.status(400).send({ error: true, message: "id is not valid" });
+    }
+
+    // Delete related records in Book_Category table
+    let deleteBookCategorySql = "DELETE FROM Book_Category WHERE book_id = ?";
+    connection.query(deleteBookCategorySql, id, (err, result) => {
+        if (err) {
+            return res.status(500).send({ error: true, message: "Internal server error" });
+        }
+
+        // Delete related records in Write table
+        let deleteWriteSql = "DELETE FROM `Write` WHERE book_id = ?";
+        connection.query(deleteWriteSql, id, (err, result) => {
+            if (err) {
+                return res.status(500).send({ error: true, message: "Internal server error" });
+            }
+
+            // Finally, delete the record from the Book table
+            let deleteBookSql = "DELETE FROM Book WHERE book_id = ?";
+            connection.query(deleteBookSql, id, (err, result) => {
+                if (err) {
+                    return res.status(500).send({ error: true, message: "Internal server error" });
+                }
+                return res.send({ error: false, data: result.affectedRows, message: "Successfully Deleted!" });
+            });
+        });
+    });
+});
 
 app.listen(process.env.ENDPORT, () =>{
     console.log(`backend listening on port ${process.env.ENDPORT}`)

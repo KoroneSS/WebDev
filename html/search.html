@@ -11,6 +11,27 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
     integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
     crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    
+    <script>
+        $(document).ready(function() {
+            try {
+                var id = 0;
+
+                id = document.cookie.split(";")[1]
+                id = id.split("=")[1]
+                console.log("id" + id)
+            } catch {
+                window.location.href = "http://localhost:3000/signin"
+            }
+            if (!id) {
+                window.location.href = "http://localhost:3000/signin"
+            }else{
+                $('#signin').text('Logged in');
+            }
+        })
+    </script>
 </head>
 
 <body>

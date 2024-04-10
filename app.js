@@ -83,11 +83,14 @@ router.get("/admin/product", (req,res) => {
     res.status(200).sendFile(path.join(`${__dirname}/html/admin-product.html`))
 })
 
+router.get("/admin/product/add", (req,res) => {
+    res.status(200).sendFile(path.join(`${__dirname}/html/admin-product-add.html`))
+})
 router.get("/admin-create" , (req,res) => {
     res.status(200).sendFile(path.join(`${__dirname}/html/admin-create.html`))
 })
 
-router.get("/admin-edit", (req,res) => {
+router.get("/admin-edit/:id", (req,res) => {
     res.status(200).sendFile(path.join(`${__dirname}/html/admin-edit.html`))
 })
 

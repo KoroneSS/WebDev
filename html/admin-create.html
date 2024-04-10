@@ -27,10 +27,30 @@
             }
             if (!id) {
                 window.location.href = "http://localhost:3000/signin"
+            }else{
+                $('#signin').text('Logged in');
             }
 
-
-            $('form').submit(function (event) {
+            fetch(`http://localhost:3001/user/${id}`,
+                {
+                    method: "GET",
+                   
+                } 
+            )
+                .then(response => response.json())
+                .then(data => {
+                    
+                    $('#adminname').text(data[0].admin_username)
+                   
+                    if(data[0].admin_permission == "2"){
+                        var role = "Head Admin"
+                    }else{
+                        var role = "Local Admin"
+                    }
+                    $('#adminrole').text(role)
+                    
+                })
+            $('.createuser').submit(function (event) {
                 event.preventDefault(); // Prevent the default form submission
 
                 // Get the form data
@@ -109,9 +129,9 @@
                             Cart
                         </a>
                     </li>
-                    <form action="/signin" method="" class="pl-4">
+                    <a href="/signin">
                         <button id="signin" class="btn btn-dark">Sign in</button>
-                    </form>
+                    </a>
                 </ul>
             </div>
         </div>
@@ -128,8 +148,8 @@
                             <img src="/image/admin/admin.png" class="img-fluid" width="200px" height="200px">
                         </div>
                         <div class="col text-center my-4">
-                            <h1 class="fz-24">Hi</h1>
-                            <h1 class="fz-16">Admin</h1>
+                            <h1 class="fz-24" id="adminame">Hi</h1>
+                            <h1 class="fz-16" id="adminrole">Admin</h1>
                         </div>
 
                         <a href="/admin" class="text-decoration-none link-dark">
@@ -165,7 +185,7 @@
 
                         <!-- admin creation-->
                         <div class="col px-5">
-                            <form action="/createuser" method="POST">
+                            <form class="createuser">
 
                                 <div class="form-floating mb-3">
                                     <input class="form-control inputbox" id="username" placeholder="Username"
