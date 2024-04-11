@@ -86,6 +86,9 @@ router.get("/admin/product", (req,res) => {
 router.get("/admin/product/add", (req,res) => {
     res.status(200).sendFile(path.join(`${__dirname}/html/admin-product-add.html`))
 })
+router.get("/admin/product-edit/:id" , (req,res)=>{
+    res.status(200).sendFile(path.join(`${__dirname}/html/admin-product-edit.html`))
+})
 router.get("/admin-create" , (req,res) => {
     res.status(200).sendFile(path.join(`${__dirname}/html/admin-create.html`))
 })
@@ -93,6 +96,7 @@ router.get("/admin-create" , (req,res) => {
 router.get("/admin-edit/:id", (req,res) => {
     res.status(200).sendFile(path.join(`${__dirname}/html/admin-edit.html`))
 })
+
 
 router.get("/error", (req,res) =>{
     res.status(200).sendFile(path.join(`${__dirname}/html/signin.html`))

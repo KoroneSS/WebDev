@@ -23,11 +23,9 @@
                 id = id.split("=")[1]
                 console.log("id" + id)
             } catch {
-                window.location.href = "http://localhost:3000/signin"
+                
             }
-            if (!id) {
-                window.location.href = "http://localhost:3000/signin"
-            }else{
+            if (id) {
                 $('#signin').text('Logged in');
             }
         })

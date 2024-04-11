@@ -35,7 +35,6 @@ app.get("/products", (req,res) => {
     b.book_stock,
     b.book_detail,
     b.book_price,
-    b.book_discount_percentage,
     GROUP_CONCAT(c.category_name SEPARATOR ', ') AS categories,
     CONCAT(MAX(a.author_fname), " ", MAX(a.author_lname)) as author_name
     FROM
@@ -163,7 +162,6 @@ app.get("/product/:id", (req,res) => {
     b.book_stock,
     b.book_detail,
     b.book_price,
-    b.book_discount_percentage,
     GROUP_CONCAT(c.category_name SEPARATOR ', ') AS categories,
     CONCAT(MAX(a.author_fname), " ", MAX(a.author_lname)) as author_name
     FROM
@@ -186,11 +184,106 @@ app.get("/product/:id", (req,res) => {
     })
 })
 
-app.post("/product", (req,res) =>{
-    var book_id = req.body.book_id
-    var book_isbn = req.body.book_isbn
-    var category_name 
-})
+app.post("/product", (req, res) => {
+    var book_isbn = req.body.book.book_isbn;
+    var book_title = req.body.book.book_title;
+    var book_publish_date = req.body.book.book_publish_date;
+    var book_publisher_name = req.body.book.book_publisher_name;
+    var book_stock = req.body.book.book_stock;
+    var book_detail = req.body.book.book_detail;
+    var book_price = req.body.book.book_price;
+    var author_id = req.body.book.author_id;
+    var categories = req.body.book.category;
+    
+    // Insert data into the Book table
+    let insertBookSql = `INSERT INTO Book (book_ISBN, book_title, book_publish_date, book_publisher_name, book_stock, book_detail, book_price) 
+                          VALUES (?, ?, ?, ?, ?, ?, ?)`;
+    connection.query(insertBookSql, [book_isbn, book_title, book_publish_date, book_publisher_name, book_stock, book_detail, book_price], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: true, message: "Internal Server Error" });
+        }
+
+        // Get the auto-generated book_id
+        var book_id = result.insertId;
+
+        // Insert data into the Write table
+        let insertWriteSql = `INSERT INTO \`Write\` (author_id, book_id) VALUES (?, ?)`;
+        connection.query(insertWriteSql, [author_id, book_id], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: true, message: "Internal Server Error" });
+            }
+
+            // Insert data into the Book_Category table
+            categories.forEach(category => {
+                let insertBookCategorySql = `INSERT INTO Book_Category (book_id, category_id) VALUES (?, (SELECT category_id FROM Category WHERE category_name = ?))`;
+                connection.query(insertBookCategorySql, [book_id, category], (err, result) => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).json({ error: true, message: "Internal Server Error" });
+                    }
+                });
+            });
+
+            return res.status(200).json({ error: false, message: "Product inserted successfully" });
+        });
+    });
+});
+
+app.put("/product", (req, res) => {
+    var book_id = req.body.book.book_id;
+    var book_isbn = req.body.book.book_isbn;
+    var book_title = req.body.book.book_title;
+    var book_publish_date = req.body.book.book_publish_date;
+    var book_publisher_name = req.body.book.book_publisher_name;
+    var book_stock = req.body.book.book_stock;
+    var book_detail = req.body.book.book_detail;
+    var book_price = req.body.book.book_price;
+    var author_id = req.body.book.author_id;
+    var categories = req.body.book.category;
+    
+    
+    // Check if book_id is provided for update
+    if (book_id) {
+        // Update data in the Book table
+        let updateBookSql = `UPDATE Book 
+                              SET book_ISBN=?, book_title=?, book_publish_date=?, book_publisher_name=?, book_stock=?, book_detail=?, book_price=?
+                              WHERE book_id=?`;
+        connection.query(updateBookSql, [book_isbn, book_title, book_publish_date, book_publisher_name, book_stock, book_detail, book_price, book_id], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: true, message: "Internal Server Error" });
+            }
+
+            // Delete existing categories for the book
+            let deleteCategoriesSql = `DELETE FROM Book_Category WHERE book_id=?`;
+            connection.query(deleteCategoriesSql, [book_id], (err, result) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).json({ error: true, message: "Internal Server Error" });
+                }
+
+                // Insert new categories for the book
+                categories.forEach(category => {
+                    let insertBookCategorySql = `INSERT INTO Book_Category (book_id, category_id) VALUES (?, (SELECT category_id FROM Category WHERE category_name = ?))`;
+                    connection.query(insertBookCategorySql, [book_id, category], (err, result) => {
+                        if (err) {
+                            console.error(err);
+                            return res.status(500).json({ error: true, message: "Internal Server Error" });
+                        }
+                    });
+                });
+
+                return res.status(200).json({ error: false, message: "Product updated successfully" });
+            });
+        });
+    } else {
+        // If book_id is not provided, return an error
+        return res.status(400).json({ error: true, message: "book_id is required for updating a product" });
+    }
+});
+
 app.delete("/product", (req, res) => {
     var id = req.body.bid;
     if (!id) {
@@ -222,6 +315,56 @@ app.delete("/product", (req, res) => {
         });
     });
 });
+
+app.get("/author/:id", (req,res)=>{
+    var id = req.params.id
+    let sql = `SELECT * From Author WHERE Author.author_id = ?`
+    connection.query(sql,id,(err,result)=>{
+        if(err){
+            return res.status(500).send({ error: true, message: "Internal server error" });
+        }
+        return res.send({error:false,author:result})
+    })
+})
+
+app.get("/book/:id", (req,res) => {
+    var id = req.params.id
+    let sql = `SELECT
+    Book.book_id,
+    Book.book_ISBN,
+    Book.book_title,
+    Book.book_publish_date,
+    Book.book_publisher_name,
+    Book.book_stock,
+    Book.book_detail,
+    Book.book_price,
+    Author.author_id AS author_id,
+    GROUP_CONCAT(Category.category_name) AS category_ids
+FROM
+    Book
+    LEFT JOIN \`Write\` ON Book.book_id = \`Write\`.book_id
+    LEFT JOIN Author ON \`Write\`.author_id = Author.author_id
+    LEFT JOIN Book_Category ON Book.book_id = Book_Category.book_id
+    LEFT JOIN Category ON Book_Category.category_id = Category.category_id
+WHERE
+    Book.book_id = 1
+GROUP BY
+    Book.book_id,
+    Book.book_ISBN,
+    Book.book_title,
+    Book.book_publish_date,
+    Book.book_publisher_name,
+    Book.book_stock,
+    Book.book_detail,
+    Book.book_price,
+    Author.author_id;`
+    connection.query(sql,id,(err,result)=>{
+        if(err){
+            return res.status(500).send({ error: true, message: "Internal server error" });
+        }
+        return res.send({error:false,data:result})
+    })
+})
 
 app.listen(process.env.ENDPORT, () =>{
     console.log(`backend listening on port ${process.env.ENDPORT}`)

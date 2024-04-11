@@ -32,6 +32,34 @@
             } else {
                 $('#signin').text('Logged in');
             }
+            const url = window.location.href;
+            const parts = url.split("/");
+            const editid = parts[parts.length - 1];
+            $('#book_id').val(editid)
+            console.log(editid)
+            fetch(`http://localhost:3001/book/${editid}`,
+        {
+            method:"GET"
+        })
+        .then(response => response.json())
+        .then(d =>{
+            if(d.error){
+                console.log("hi")
+                window.alert(d.message)
+            }else{
+                $('#book_isbn').val(d.data[0].book_ISBN);
+                $('#book_title').val(d.data[0].book_title);
+                $('#book_publish_date').val(d.data[0].book_publish_date);
+                $('#book_publisher_name').val(d.data[0].book_publisher_name);
+                $('#book_stock').val(d.data[0].book_stock);
+                $('#book_price').val(d.data[0].book_price);
+                $('#book_detail').val(d.data[0].book_detail);
+                $('#author_id').val(d.data[0].author_id);
+                $('#category').val(d.data[0].category_ids);
+            }
+
+        })
+
             $('#author_id').on('input', function () {
                 var authorId = $(this).val();
                 if (authorId) {
@@ -40,7 +68,7 @@
                     })
                         .then(response => response.json())
                         .then(data => {
-                            console.log(data.author[0])
+                            
                             if (data.error) {
                                 $('#author_fname').val('')
                                 $('#author_lname').val('')
@@ -61,11 +89,12 @@
                 });
             });
 
-            $('#productaddbutton').on('click', function () {
+            $('#producteditbutton').on('click', function () {
                try{
+                var bookid = editid
                 var bookisbn = $('#book_isbn').val()
                 var booktitle = $('#book_title').val()
-                var bookpubdate = $('#book_publish_date').val()
+                var bookpubdate = $('#book_publish_date').val().split("T")[0]
                 var bookpubname = $('#book_publisher_name').val()
                 var bookstock = $('#book_stock').val()
                 var bookprice = $('#book_price').val()
@@ -74,6 +103,7 @@
                 var categoryInput = $('#category').val()
                 var categories = categoryInput.includes(',') ? categoryInput.split(',').map(category => category.trim()) : [categoryInput.trim()];
                 var productData = {
+                    book_id: bookid,
                     book_isbn: bookisbn,
                     book_title: booktitle,
                     book_publish_date: bookpubdate,
@@ -86,7 +116,7 @@
                 };
                 console.log(productData)
                 fetch("http://localhost:3001/product",{
-                    method: "POST",
+                    method: "PUT",
                     body: JSON.stringify({book:productData}),
                     headers: {
                         "Content-Type": "application/json"
@@ -160,7 +190,7 @@
     <div class="container-fluid h-auto py-5 d-flex bg-customgray justify-content-center">
         <div class="formcontainer w-75">
             <div class="row">
-                <h1 class="fz-48">Product Creation</h1>
+                <h1 class="fz-48">Product Edit</h1>
             </div>
 
             <!--book part-->
@@ -168,6 +198,12 @@
                 <h1 class="fz-24">Book</h1>
             </div>
             <div class="row mb-3">
+                <div class="col-1">
+                    <div class="form-floating">
+                        <input class="form-control" id="book_id" placeholder="" readonly >
+                        <label class="form-label" for="book_id">Book ID</label>
+                    </div>
+                </div>
                 <div class="col-4">
                     <div class="form-floating">
                         <input class="form-control" id="book_isbn" placeholder="">
@@ -271,7 +307,7 @@
                     </a>
                 </div>
                 <div class="col text-end">
-                    <button id="productaddbutton" class="btn btn-primary">Add Product</button>
+                    <button id="producteditbutton" class="btn btn-primary">Edit Product</button>
                 </div>
             </div>
         </div>
