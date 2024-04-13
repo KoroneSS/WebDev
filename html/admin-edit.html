@@ -16,15 +16,8 @@
     <script>
         $(document).ready(function () {
 
-            try {
-                var id = 0;
-
-                id = document.cookie.split(";")[1]
-                id = id.split("=")[1]
-                console.log("id" + id)
-            } catch {
-                window.location.href = "http://localhost:3000/signin"
-            }
+            var id = document.cookie.split("=")[1]
+            console.log("id" + id)
             if (!id) {
                 window.location.href = "http://localhost:3000/signin"
             }else{
@@ -150,9 +143,9 @@
                             Cart
                         </a>
                     </li>
-                    <form action="/signin" method="" class="pl-4">
+                    <a href="/signin">
                         <button id="signin" class="btn btn-dark">Sign in</button>
-                    </form>
+                    </a>
                 </ul>
             </div>
         </div>

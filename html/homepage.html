@@ -16,15 +16,7 @@
     
     <script>
         $(document).ready(function() {
-            try {
-                var id = 0;
-
-                id = document.cookie.split(";")[1]
-                id = id.split("=")[1]
-                console.log("id" + id)
-            } catch {
-                
-            }
+            var id = document.cookie.split("=")[1]
             if (id) {
                 $('#signin').text('Logged in');
             }
@@ -68,9 +60,9 @@
                             Cart
                         </a>
                     </li>
-                    <form action="/signin" method="" class="pl-4">
+                    <a href="/signin">
                         <button id="signin" class="btn btn-dark">Sign in</button>
-                    </form>
+                    </a>
                 </ul>
             </div>
         </div>

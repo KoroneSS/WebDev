@@ -17,14 +17,8 @@
   <script>
     var valid = false;
 
-    try {
-      id = document.cookie.split(";")[1]
-      id = id.split("=")[1]
-      console.log(id)
-      valid = true
-    } catch {
-      console.log("invalid cookie")
-    }
+    id = document.cookie.split("=")[1]
+    console.log("id" + id)
     if (!id) {
       window.location.href = "http://localhost:3000/signin"
     } else {
@@ -71,9 +65,9 @@
               Cart
             </a>
           </li>
-          <form action="/signin" method="" class="pl-4">
+          <a href="/signin">
             <button id="signin" class="btn btn-dark">Sign in</button>
-          </form>
+        </a>
         </ul>
       </div>
     </div>
@@ -186,7 +180,7 @@
             "<tr>" +
             `<td>${product.book_id}</td>` +
             `<td>${product.book_ISBN}</td>` +
-            `<td>${product.categories}</td>` +
+            `<td>${product.book_category}</td>` +
             `<td>${product.book_title}</td>` +
             `<td>${product.author_name}</td>` +
             `<td>${product.book_publisher_name}</td>` +

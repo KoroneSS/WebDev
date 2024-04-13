@@ -18,15 +18,8 @@
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
     <script>
         $(document).ready(function () {
-            try {
-                var id = 0;
-
-                id = document.cookie.split(";")[1]
-                id = id.split("=")[1]
-                console.log("id" + id)
-            } catch {
-                window.location.href = "http://localhost:3000/signin"
-            }
+            var id = document.cookie.split("=")[1]
+            console.log("id" + id)
             if (!id) {
                 window.location.href = "http://localhost:3000/signin"
             } else {
@@ -37,6 +30,8 @@
             const editid = parts[parts.length - 1];
             $('#book_id').val(editid)
             console.log(editid)
+            
+            
             fetch(`http://localhost:3001/book/${editid}`,
         {
             method:"GET"
@@ -55,7 +50,25 @@
                 $('#book_price').val(d.data[0].book_price);
                 $('#book_detail').val(d.data[0].book_detail);
                 $('#author_id').val(d.data[0].author_id);
-                $('#category').val(d.data[0].category_ids);
+                var choice;
+                switch(d.data[0].book_category){
+                    case "English Book":
+                        choice=1;
+                        break;
+                    case "Chinese Book":
+                        choice=2;
+                        break;
+                    case "Japanese Book":
+                        choice=3;
+                        break;
+                    case "Thai Book":
+                        choice=4;
+                        break;
+                    case "Comics/Manga":
+                        choice=5;
+                        break;
+                }
+                $('#category').val(choice);
             }
 
         })
@@ -101,7 +114,27 @@
                 var bookdetail = $('#book_detail').val()
                 var authoruid = $('#author_id').val()
                 var categoryInput = $('#category').val()
-                var categories = categoryInput.includes(',') ? categoryInput.split(',').map(category => category.trim()) : [categoryInput.trim()];
+                console.log(categoryInput)
+                var category;
+                switch(categoryInput){
+                    case "1":
+                        category = "English Book"
+                        break
+                    case "2":
+                        category = "Chinese Book"
+                        break
+                    case "3":
+                        category = "Japanese Book"
+                        break
+                    case "4":
+                        category = "Thai Book"
+                        break
+                    case "5":
+                        category = "Comics/Manga"
+                        break
+                    default:
+                        category = ""
+                }
                 var productData = {
                     book_id: bookid,
                     book_isbn: bookisbn,
@@ -112,7 +145,7 @@
                     book_price: bookprice,
                     book_detail: bookdetail,
                     author_id: authoruid,
-                    category: categories
+                    book_category: category
                 };
                 console.log(productData)
                 fetch("http://localhost:3001/product",{
@@ -179,9 +212,9 @@
                             Cart
                         </a>
                     </li>
-                    <form action="/signin" method="" class="pl-4">
+                    <a href="/signin">
                         <button id="signin" class="btn btn-dark">Sign in</button>
-                    </form>
+                    </a>
                 </ul>
             </div>
         </div>
@@ -220,7 +253,7 @@
             <div class="row mb-3">
                 <div class="col-2">
 
-                    <input class="form-control" type="text" id="book_publish_date" placeholder="Book Publish Date">
+                    <input class="form-control" type="text" id="book_publish_date" placeholder="Book Publish Date" autocomplete="off">
 
                 </div>
                 <div class="col-3">
@@ -292,11 +325,15 @@
             </div>
             <div class="row mb-3">
                 <div class="col">
-                    <div class="form-floating">
-                        <input class="form-control" id="category" placeholder="">
-                        <label class="form-label" for="category">Book Category (separate category with ",") ex.
-                            "Romance, Comedy"</label>
-                    </div>
+                    <dd>
+                        <select id="category" name="category">
+                          <option value="1">English Books</option>
+                          <option value="2">Chinese Books</option>
+                          <option value="3">Japanese Books</option>
+                          <option value="4">Thai Books</option>
+                          <option value="5">Comics/Manga</option>
+                        </select>
+                      </dd>
                 </div>
             </div>
 

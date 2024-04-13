@@ -16,19 +16,17 @@
     
     <script>
         $(document).ready(function() {
-          try {
-                var id = 0;
-
-                id = document.cookie.split(";")[1]
-                id = id.split("=")[1]
-                console.log("id" + id)
-            } catch {
-                
-            }
+          var id = document.cookie.split("=")[1]
             if (id) {
                 $('#signin').text('Logged in');
             }
+
+          $('.advanced_search').on('click', function(){
+            var category
+          })
         })
+
+
     </script>
 </head>
 
@@ -67,9 +65,9 @@
               Cart
             </a>
           </li>
-          <form action="/signin" method="" class="pl-4">
+          <a href="/signin">
             <button id="signin" class="btn btn-dark">Sign in</button>
-          </form>
+        </a>
         </ul>
       </div>
     </div>
@@ -82,7 +80,7 @@
         <div id="form">
           <div id="contactBox">
             <p class="note">Please complete the fields below.<br>Click Search button to search.</p>
-            <form action="/advanced_search" method="post">
+            <form action="/advanced_search" method="post" class="advanced_search">
               <div class="custom-selectbox">
                 <dl class="first">
                   <dt>
