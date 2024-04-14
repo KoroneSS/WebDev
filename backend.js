@@ -335,6 +335,72 @@ GROUP BY
     })
 })
 
+app.get("/product-search/", (req,res)=>{
+    query = req.query
+    console.log(query.detailed_search)
+    let sql;
+    let values;
+    if(query.detailed_search == 'false'){
+        sql = `
+        SELECT *
+        FROM Book b
+        JOIN \`Write\` w ON b.book_id = w.book_id
+        JOIN Author a ON w.author_id = a.author_id
+        WHERE b.book_category = ? OR b.book_ISBN = ?
+      `
+        values = [query.category,`%${query.isbn}%`]
+    }else{
+        let author = query.author ? `%${query.author}%` : "";
+        let conditions = [];
+        values = [];
+        if(query.category){
+            conditions.push("b.book_category = ?")
+            values.push(query.category);
+        }
+        if(query.title){
+            conditions.push("b.book_title = ?")
+            values.push(query.title);
+        }
+        if(query.publisher){
+            conditions.push("b.book_publisher_name = ?")
+            values.push(query.publisher);
+        }
+        if (query.pubdate_from) {
+            conditions.push("b.book_publish_date >= ?");
+            values.push(query.pubdate_from);
+        }
+        if (query.pubdate_to) {
+            conditions.push("b.book_publish_date <= ?");
+            values.push(query.pubdate_to);
+        }
+        if (query.author) {
+            conditions.push("(a.author_fname LIKE ? OR a.author_lname LIKE ?)");
+            values.push(author, author);
+        }
+        if (query.availableOnly == 'true'){
+            conditions.push("b.book_stock > 0")
+        }
+
+        sql = `
+            SELECT *
+            FROM Book b
+            JOIN \`Write\` w ON b.book_id = w.book_id
+            JOIN Author a ON w.author_id = a.author_id
+            WHERE ${conditions.join(" AND ")}
+        `;
+        
+    }
+    console.log(sql)
+
+    connection.query(sql,values,(err,result)=>{
+        if(err){
+            console.log(err)
+            return res.status(500).send({ error: true, message: "Internal server error" });
+        }
+        return res.send({error:false,result:result})
+    })
+})
+
 app.listen(process.env.ENDPORT, () =>{
     console.log(`backend listening on port ${process.env.ENDPORT}`)
 })

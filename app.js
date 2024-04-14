@@ -22,41 +22,8 @@ router.get("/",(req,res) => {
 router.get("/signin", (req,res) => {
     res.status(200).sendFile(path.join(`${__dirname}/html/signin.html`))
 })
-/*
-router.post("/login", (req,res) => {
-    const username = req.body.username;
-    const password = req.body.password;
-    fetch("http://localhost:3001/auth",
-    {
-        method: "POST",
-        body: JSON.stringify({user: username, pw: password}),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response => response.json())
-    .then(data =>{
-        if(data.valid){
-            
-            res.cookie("id", data.id,{maxAge:900000})
-            res.redirect("/admin")
-        }
-        else{
-            console.log("invalid")
-            res.redirect("/signin")
-        }
-    })
 
-    
-})
-*/
 
-router.post("/setcookie",(req,res) =>{
-    let id = req.body.id
-    
-    res.cookie("id", id, {maxAge:900000})
-    
-})
 
 /* About Us */
 router.get("/aboutus", (req,res) => {
@@ -72,6 +39,12 @@ router.get("/cart", (req,res) => {
 /* Search */
 router.get("/search", (req,res) => {
     res.status(200).sendFile(path.join(`${__dirname}/html/search.html`))
+})
+
+router.get("/search-result/", (req,res) => {
+    console.log(req.query)
+    res.status(200).sendFile(path.join(`${__dirname}/html/search-result.html`))
+    
 })
 
 /* Admin */

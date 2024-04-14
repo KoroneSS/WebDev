@@ -11,23 +11,115 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
     integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
     crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    
-    <script>
-        $(document).ready(function() {
-          var id = document.cookie.split("=")[1]
-            if (id) {
-                $('#signin').text('Logged in');
-            }
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-          $('.advanced_search').on('click', function(){
-            var category
-          })
-        })
+  <script>
+    $(document).ready(function () {
+      var id = document.cookie.split("=")[1]
+      if (id) {
+        $('#signin').text('Logged in');
+      }
 
 
-    </script>
+
+      $('.advanced_search').on('submit', function () {
+        event.preventDefault();
+        var categoryInput = $('#taxon').val()
+        var category;
+        switch (categoryInput) {
+          case "1":
+            category = "English Book"
+            break
+          case "2":
+            category = "Chinese Book"
+            break
+          case "3":
+            category = "Japanese Book"
+            break
+          case "4":
+            category = "Thai Book"
+            break
+          case "5":
+            category = "Comics/Manga"
+            break
+          default:
+            category = ""
+        }
+        var isbn = $('#isbn').val()
+        const categoryString = encodeURIComponent(category)
+        const isbnString = encodeURIComponent(isbn)
+        const queryString = `detailed_search=false&category=${categoryString}&isbn=${isbnString}`
+        window.location.href = `/search-result/?${queryString}`
+      })
+
+      $('.detail-search').on('submit', function () {
+        event.preventDefault()
+        var categoryInput = $('#taxon2').val()
+        var category;
+        switch (categoryInput) {
+          case "1":
+            category = "English Book"
+            break
+          case "2":
+            category = "Chinese Book"
+            break
+          case "3":
+            category = "Japanese Book"
+            break
+          case "4":
+            category = "Thai Book"
+            break
+          case "5":
+            category = "Comics/Manga"
+            break
+          default:
+            category = ""
+        }
+        var title = $('#restrictBy_title').val()
+        var author = $('#author_input').val()
+        var publisher = $('#publisher_input').val()
+        var availableOnly = $('#checkbox').is(':checked') ? true : false;
+        var pubdate_from_year = $('select[name="pubdate_from_year"]').val();
+        var pubdate_from_month = $('select[name="pubdate_from_month"]').val();
+        var pubdate_to_year = $('select[name="pubdate_to_year"]').val();
+        var pubdate_to_month = $('select[name="pubdate_to_month"]').val();
+
+        if (!pubdate_from_year && !pubdate_from_month && !pubdate_to_year && !pubdate_to_month) {
+          var pubdate_from = "";
+          var pubdate_to = "";
+        } else {
+          if (!pubdate_from_year || !pubdate_from_month || !pubdate_to_year || !pubdate_to_month) {
+            alert('Please select all publication date fields');
+            return;
+          }
+          var pubdate_from = pubdate_from_year + '-' + pubdate_from_month + '-01';
+          var pubdate_to = pubdate_to_year + '-' + pubdate_to_month + '-31'; // Assuming the last day of the month
+
+          if (new Date(pubdate_to) <= new Date(pubdate_from)) {
+            alert('Publication date "To" must be greater than "From"');
+            return;
+          }
+        }
+
+        const queryString = `detailed_search=true&category=${category}&title=${title}&author=${author}&publisher=${publisher}&availableOnly=${availableOnly}&pubdate_from=${pubdate_from}&pubdate_to=${pubdate_to}`;
+        window.location.href = `/search-result/?${queryString}`;
+
+
+      })
+
+      $('#clearAdvancedSearch').on('click', function () {
+        $('.advanced_search')[0].reset();
+      });
+
+      // Clear button for detail search form
+      $('#clearDetailSearch').on('click', function () {
+        $('.detail-search')[0].reset();
+      });
+    })
+
+
+  </script>
 </head>
 
 <body>
@@ -67,7 +159,7 @@
           </li>
           <a href="/signin">
             <button id="signin" class="btn btn-dark">Sign in</button>
-        </a>
+          </a>
         </ul>
       </div>
     </div>
@@ -89,11 +181,11 @@
                   <dd>
                     <select class="categorySearchSelect" id="taxon" name="taxon">
                       <option value="">All</option>
-                      <option value="2">English Books</option>
-                      <option value="3">Chinese Books</option>
-                      <option value="4">Japanese Books</option>
-                      <option value="5">Thai Books</option>
-                      <option value="6">Comics/Manga</option>
+                      <option value="1">English Books</option>
+                      <option value="2">Chinese Books</option>
+                      <option value="3">Japanese Books</option>
+                      <option value="4">Thai Books</option>
+                      <option value="5">Comics/Manga</option>
                     </select>
                   </dd>
 
@@ -116,7 +208,7 @@
               </ul>
             </form>
 
-            <form action="/products" method="get" id="detail-search">
+            <form action="/products" method="get" class="detail-search">
               <div>
                 <input type="hidden" name="utf8" value="&#x2713;">
                 <input type="hidden" name="is_searching" value="true">
@@ -125,16 +217,16 @@
               <div class="custom-selectbox">
                 <dl class="first">
                   <dt>
-                    <label for="taxon">Category</label>
+                    <label for="taxon2">Category</label>
                   </dt>
                   <dd>
-                    <select class="categorySearchSelect" id="taxon" name="taxon">
+                    <select class="categorySearchSelect" id="taxon2" name="taxon">
                       <option value="">All</option>
-                      <option value="2">English Books</option>
-                      <option value="3">Chinese Books</option>
-                      <option value="4">Japanese Books</option>
-                      <option value="5">Thai Books</option>
-                      <option value="6">Comics/Manga</option>
+                      <option value="1">English Books</option>
+                      <option value="2">Chinese Books</option>
+                      <option value="3">Japanese Books</option>
+                      <option value="4">Thai Books</option>
+                      <option value="5">Comics/Manga</option>
                     </select>
                   </dd>
 
@@ -148,7 +240,7 @@
                   <input class="textArea search-field" id="restrictBy_title" name="restrictBy[title]" type="text"
                     value="">
                 </dd>
-              </dt>
+                </dt>
               </dl>
 
               <dl>
@@ -156,7 +248,7 @@
                   <label for="author_input">Author</label>
                 </dt>
                 </dd>
-                  <input class="textArea search-field" id="author_input" name="restrictBy[author]" type="text" value="">
+                <input class="textArea search-field" id="author_input" name="restrictBy[author]" type="text" value="">
                 </dd>
               </dl>
 
@@ -181,7 +273,7 @@
               </dl>
 
 
-              <div class="custom-selectbox sBox">
+              <div class="custom-selectbox sBox mb-3">
                 <dl>
                   <dt>
                     <label for="pubdate_from_year">Publication Date</label>
@@ -255,22 +347,7 @@
               </div>
 
 
-              <div class="custom-selectbox sBox">
-                <dl class="mb30">
-                  <dt>
-                    <label for="per_page">Results per page</label>
-                  </dt>
-                  <dd>
-                    <select class="selectBox" id="per_page" name="per_page">
-                      <option value="20">20</option>
-                      <option value="40">40</option>
-                      <option value="60">60</option>
-                      <option value="80">80</option>
-                      <option value="100">100</option>
-                    </select>
-                  </dd>
-                </dl>
-              </div>
+
 
 
 
