@@ -44,11 +44,12 @@
             }else{
                 $('#book_isbn').val(d.data[0].book_ISBN);
                 $('#book_title').val(d.data[0].book_title);
-                $('#book_publish_date').val(d.data[0].book_publish_date);
+                $('#book_publish_date').val(d.data[0].book_publish_date.split("T")[0]);
                 $('#book_publisher_name').val(d.data[0].book_publisher_name);
                 $('#book_stock').val(d.data[0].book_stock);
                 $('#book_price').val(d.data[0].book_price);
                 $('#book_detail').val(d.data[0].book_detail);
+                $('#book_image').val(d.data[0].book_image);
                 $('#author_id').val(d.data[0].author_id);
                 var choice;
                 switch(d.data[0].book_category){
@@ -112,6 +113,7 @@
                 var bookstock = $('#book_stock').val()
                 var bookprice = $('#book_price').val()
                 var bookdetail = $('#book_detail').val()
+                var bookimage = $('#book_image').val()
                 var authoruid = $('#author_id').val()
                 var categoryInput = $('#category').val()
                 console.log(categoryInput)
@@ -144,6 +146,7 @@
                     book_stock: bookstock,
                     book_price: bookprice,
                     book_detail: bookdetail,
+                    book_image: bookimage,
                     author_id: authoruid,
                     book_category: category
                 };
@@ -272,6 +275,12 @@
                     <div class="form-floating">
                         <input class="form-control" type="number" id="book_price" min="0" step="0.1" placeholder="" />
                         <label class="form-label" for="book_price">Price</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-floating">
+                        <input class="form-control" id="book_image" placeholder="" />
+                        <label class="form-label" for="book_price">Book Image (Link)</label>
                     </div>
                 </div>
             </div>

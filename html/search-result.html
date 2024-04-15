@@ -32,6 +32,21 @@
             .then(response => response.json())
             .then(data =>{
                 console.log(data.result)
+                data.result.forEach(product => {
+
+                    var prod = `
+                    <a href="/product/${product.book_id}"" class="text-decoration-none">
+                        <div class="bg-customlightgray mx-4 my-4 text-center pt-3 pb-1">
+                            <img src="${product.book_image}" width="150px" height="200px" class="mb-2">
+                            <h1 class="fz-16 text-wrap">${product.book_title}</h1>
+                        </div>
+                    </a>
+                    `
+
+
+                    $('.search-result-list').append(prod)
+                })
+                
             })
             
             
@@ -87,8 +102,22 @@
             </div>
         </div>
     </nav>
-    <!--search page-->
+    <!--search result page-->
+    <div class="container-fluid bg-customgray py-4">
+        <div class="result container">
+            <div class="row mb-3 ">
+                <h1 class="fz-48">Search Results</h1>
+            </div>
+            <hr>
+            <div class="row row-cols-5 search-result-list justify-content-start mb-3">
+   
+            </div>
 
+            <a href="/search">
+                <button class="btn btn-lg btn-primary">Back</button>
+            </a>
+        </div>
+    </div>
 
 
     <!--footer-->

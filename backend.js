@@ -39,13 +39,13 @@ app.get("/products", (req,res) => {
     CONCAT(MAX(a.author_fname), " ", MAX(a.author_lname)) as author_name
     FROM
         Book b
-    JOIN
+    LEFT JOIN
         \`Write\` w ON b.book_id = w.book_id
-    JOIN
+    LEFT JOIN
         Author a ON w.author_id = a.author_id
     GROUP BY
         b.book_id
-        ORDER by b.book_id ASC;`;
+    ORDER by b.book_id ASC;`;
     connection.query(sql, (err, result) =>{
         if (err) throw err;
         res.status(200).json(result);
@@ -152,7 +152,7 @@ app.get("/product/:id", (req,res) => {
     
     let sql = `SELECT
     b.book_id,
-    b.book_ISBN,
+    b.book_isbn,
     b.book_title,
     b.book_publish_date,
     b.book_publisher_name,
@@ -160,6 +160,7 @@ app.get("/product/:id", (req,res) => {
     b.book_detail,
     b.book_price,
     b.book_category,
+    b.book_image,
     CONCAT(MAX(a.author_fname), " ", MAX(a.author_lname)) as author_name
     FROM
         Book b
@@ -186,13 +187,14 @@ app.post("/product", (req, res) => {
     var book_detail = req.body.book.book_detail;
     var book_price = req.body.book.book_price;
     var book_category = req.body.book.book_category;
+    var book_image = req.body.book.book_image;
     var author_id = req.body.book.author_id;
     
     
     // Insert data into the Book table
-    let insertBookSql = `INSERT INTO Book (book_ISBN, book_title, book_publish_date, book_publisher_name, book_stock, book_detail, book_price, book_category) 
-                          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
-    connection.query(insertBookSql, [book_isbn, book_title, book_publish_date, book_publisher_name, book_stock, book_detail, book_price, book_category], (err, result) => {
+    let insertBookSql = `INSERT INTO Book (book_ISBN, book_title, book_publish_date, book_publisher_name, book_stock, book_detail, book_price, book_category, book_image) 
+                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    connection.query(insertBookSql, [book_isbn, book_title, book_publish_date, book_publisher_name, book_stock, book_detail, book_price, book_category, book_image], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: true, message: "Internal Server Error" });
@@ -225,6 +227,7 @@ app.put("/product", (req, res) => {
     var book_detail = req.body.book.book_detail;
     var book_price = req.body.book.book_price;
     var book_category = req.body.book.book_category;
+    var book_image = req.body.book.book_image;
     var author_id = req.body.book.author_id;
     
     
@@ -233,9 +236,9 @@ app.put("/product", (req, res) => {
     if (book_id) {
         // Update data in the Book table
         let updateBookSql = `UPDATE Book 
-                              SET book_ISBN=?, book_title=?, book_publish_date=?, book_publisher_name=?, book_stock=?, book_detail=?, book_price=?, book_category = ?
+                              SET book_ISBN=?, book_title=?, book_publish_date=?, book_publisher_name=?, book_stock=?, book_detail=?, book_price=?, book_category = ?, book_image = ?
                               WHERE book_id=?`;
-        connection.query(updateBookSql, [book_isbn, book_title, book_publish_date, book_publisher_name, book_stock, book_detail, book_price,book_category, book_id], (err, result) => {
+        connection.query(updateBookSql, [book_isbn, book_title, book_publish_date, book_publisher_name, book_stock, book_detail, book_price,book_category, book_image, book_id], (err, result) => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ error: true, message: "Internal Server Error" });
@@ -309,6 +312,7 @@ app.get("/book/:id", (req,res) => {
     Book.book_detail,
     Book.book_price,
     Book.book_category,
+    Book.book_image,
     Author.author_id AS author_id
 FROM
     Book
@@ -326,6 +330,7 @@ GROUP BY
     Book.book_detail,
     Book.book_price,
     Book.book_category,
+    Book.book_image,
     Author.author_id;`
     connection.query(sql,id,(err,result)=>{
         if(err){
@@ -341,16 +346,31 @@ app.get("/product-search/", (req,res)=>{
     let sql;
     let values;
     if(query.detailed_search == 'false'){
+        let conditions = []
+        let values = []
+        var where = ""
+        if(query.category || query.isbn){
+            var where = "WHERE"
+        }
+        if(query.category){
+            conditions.push("b.book_category = ?")
+            values.push(query.category)
+        }
+        if(query.isbn){
+            conditions.push("b.book_isbn = ?")
+            values.push(query.isbn)
+        }
         sql = `
-        SELECT *
+        SELECT 
+            b.book_id,
+            b.book_title,
+            b.book_image
         FROM Book b
-        JOIN \`Write\` w ON b.book_id = w.book_id
-        JOIN Author a ON w.author_id = a.author_id
-        WHERE b.book_category = ? OR b.book_ISBN = ?
+        ${where} ${conditions.join(" AND ")}
+        ORDER BY b.book_id ASC
       `
         values = [query.category,`%${query.isbn}%`]
     }else{
-        let author = query.author ? `%${query.author}%` : "";
         let conditions = [];
         values = [];
         if(query.category){
@@ -358,12 +378,12 @@ app.get("/product-search/", (req,res)=>{
             values.push(query.category);
         }
         if(query.title){
-            conditions.push("b.book_title = ?")
-            values.push(query.title);
+            conditions.push("b.book_title LIKE ?")
+            values.push(`%${query.title}%`);
         }
         if(query.publisher){
-            conditions.push("b.book_publisher_name = ?")
-            values.push(query.publisher);
+            conditions.push("b.book_publisher_name LIKE ?")
+            values.push(`%${query.publisher}%`);
         }
         if (query.pubdate_from) {
             conditions.push("b.book_publish_date >= ?");
@@ -375,22 +395,26 @@ app.get("/product-search/", (req,res)=>{
         }
         if (query.author) {
             conditions.push("(a.author_fname LIKE ? OR a.author_lname LIKE ?)");
-            values.push(author, author);
+            values.push(`%${query.author}%`, `%${query.author}%`);
         }
         if (query.availableOnly == 'true'){
             conditions.push("b.book_stock > 0")
         }
 
         sql = `
-            SELECT *
+            SELECT 
+                b.book_id,
+                b.book_title,
+                b.book_image
             FROM Book b
-            JOIN \`Write\` w ON b.book_id = w.book_id
-            JOIN Author a ON w.author_id = a.author_id
+            LEFT JOIN \`Write\` w ON b.book_id = w.book_id
+            LEFT JOIN Author a ON w.author_id = a.author_id
             WHERE ${conditions.join(" AND ")}
+            ORDER BY b.book_id ASC
         `;
         
     }
-    console.log(sql)
+    
 
     connection.query(sql,values,(err,result)=>{
         if(err){

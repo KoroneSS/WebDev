@@ -42,9 +42,13 @@ router.get("/search", (req,res) => {
 })
 
 router.get("/search-result/", (req,res) => {
-    console.log(req.query)
+    
     res.status(200).sendFile(path.join(`${__dirname}/html/search-result.html`))
     
+})
+
+router.get("/product/:id", (req,res) => {
+    res.status(200).sendFile(path.join(`${__dirname}/html/product.html`))
 })
 
 /* Admin */
