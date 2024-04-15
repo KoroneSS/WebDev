@@ -4,15 +4,16 @@ create database if not exists webdev;
 use webdev;
 
 CREATE TABLE IF NOT EXISTS Book(
-	book_id int,
-    book_ISBN int,
+	book_id int AUTO_INCREMENT,
+    book_isbn varchar(20),
     book_title varchar(100),
     book_publish_date date,
     book_publisher_name varchar(100),
     book_stock int,
     book_detail varchar(1000),
     book_price float,
-    book_discount_percentage float,
+    book_category varchar(100),
+    book_image varchar(200),
     primary key (book_id)
 );
 
@@ -25,12 +26,6 @@ CREATE TABLE IF NOT EXISTS Author (
     primary key (author_id)
 );
 
-CREATE TABLE IF NOT EXISTS Publisher (
-	publisher_id int AUTO_INCREMENT,
-    publisher_name varchar(50),
-    publisher_location varchar(100),
-    primary key (publisher_id)
-);
 
 CREATE TABLE IF NOT EXISTS `Admin`(
 	admin_id int AUTO_INCREMENT,
@@ -40,19 +35,6 @@ CREATE TABLE IF NOT EXISTS `Admin`(
     primary key (admin_id)
 );
 
-CREATE TABLE IF NOT EXISTS Category(
-	category_id int AUTO_INCREMENT,
-    category_name varchar(50),
-    primary key (category_id)
-);
-
-CREATE TABLE IF NOT EXISTS Book_Category(
-	book_id int AUTO_INCREMENT,
-    category_id int,
-    primary key (book_id,category_id),
-    foreign key (book_id) references Book(book_id),
-    foreign key (category_id) references Category(category_id)
-);
 
 CREATE TABLE IF NOT EXISTS `Write`(
 	author_id int,
@@ -62,19 +44,16 @@ CREATE TABLE IF NOT EXISTS `Write`(
     foreign key (author_id) references Author(author_id)
 );
 ALTER TABLE Book AUTO_INCREMENT=1;
-INSERT IGNORE INTO Book
-VALUES (1,1000,"Mahiru","2024-09-10","Animag",100,"Best LN ever",300,0);
+INSERT IGNORE INTO Book (book_ISBN,book_title,book_publish_date,book_publisher_name,book_stock,book_detail,book_price, book_category, book_image)
+VALUES ("1000","Mahiru","2024-09-10","Animag",100,"Best LN ever",300, "Comics/Manga", "https://i.ibb.co/y88BZc0/Otonari1.jpg"),
+	   ("1001","Arya","2024-10-10","Phoenix Next",100,"Best LN ever",300, "Japanese Book", "https://i.ibb.co/y88BZc0/Otonari1.jpg");
 
-INSERT IGNORE INTO Category (category_name)
-VALUES 	("Romance"),
-		("Comedy");
 
-INSERT IGNORE INTO Book_Category
-VALUES 	(1,1),
-		(1,2);
+
         
 INSERT IGNORE INTO Author
-VALUES (1,"Saekisan", "","JP","");
+VALUES (1,"Saekisan", "","JP",""),
+	   (2,"hi","","JP","");
 
 INSERT IGNORE INTO `Write`
 VALUES (1,1);
