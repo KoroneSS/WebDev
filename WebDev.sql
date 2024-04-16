@@ -44,20 +44,25 @@ CREATE TABLE IF NOT EXISTS `Write`(
     foreign key (author_id) references Author(author_id)
 );
 ALTER TABLE Book AUTO_INCREMENT=1;
-INSERT IGNORE INTO Book (book_ISBN,book_title,book_publish_date,book_publisher_name,book_stock,book_detail,book_price, book_category, book_image)
-VALUES ("1000","Mahiru","2024-09-10","Animag",100,"Best LN ever",300, "Comics/Manga", "https://i.ibb.co/y88BZc0/Otonari1.jpg"),
-	   ("1001","Arya","2024-10-10","Phoenix Next",100,"Best LN ever",300, "Japanese Book", "https://i.ibb.co/y88BZc0/Otonari1.jpg");
-
-
+INSERT IGNORE INTO Book (book_ISBN, book_title, book_publish_date, book_publisher_name, book_stock, book_detail, book_price, book_category, book_image)
+VALUES ("1000", "The Angel Next Door Spoils Me Rotten, Vol. 1", "2024-09-10", "Animag", 100, "Best LN ever", 300, "Comics/Manga", "https://i.ibb.co/y88BZc0/Otonari1.jpg"),
+	   ("1001", "Alya Sometimes Hides Her Feelings in Russian, Vol. 1", "2024-10-10", "Phoenix Next", 100, "Best LN ever", 300, "Japanese Light Novel", "https://i.ibb.co/1ndmP8W/image-2024-04-16-204031751.png"),
+       ("1002", "The Eminence in Shadow, Vol. 1", "2024-10-10", "Phoenix Next", 100, "One of the most popular series out there.", 300, "Comics/Manga", "https://i.ibb.co/N6tGBCz/image-2024-04-16-195721292.png"),
+       ("1003", "Gimai Seikatsu, Vol. 1", "2024-10-10", "Phoenix Next", 100, "One of the most popular series out there.", 300, "Japanese Light Novel", "https://i.ibb.co/dgRzjYG/image-2024-04-16-204809263.png");
 
         
 INSERT IGNORE INTO Author
 VALUES (1,"Saekisan", "","JP",""),
-	   (2,"hi","","JP","");
+	   (2,"SunSunSun","","JP",""),
+       (3,"Daisuke","Aizawa","JP",""),
+       (4,"Ghost","Mikawa","JP","");
 
 INSERT IGNORE INTO `Write`
-VALUES (1,1);
+VALUES	(1, 1),
+		(2, 2),
+        (3, 3),
+        (4, 4);
 
 INSERT IGNORE INTO `Admin` (admin_username,admin_password,admin_permission)
-VALUES ("muthitha", "cat", "2"),
+VALUES 	("muthitha", "cat", "2"),
 		("pavit", "dawg", "1");
