@@ -441,6 +441,23 @@ app.get("/product-search/", (req,res)=>{
     })
 })
 
+app.get("/publicapi", async (req, res) => {
+    try {
+        const data = await fetchAPI();
+        res.json(data);
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+
+    async function fetchAPI(){
+        const BASE_URL = `https://api.ipdata.co?api-key=${process.env.API_KEY}&fields=country_name`;
+        const response = await fetch(BASE_URL);
+        const data = await response.json();
+        return data;
+    }
+})
+
 app.listen(process.env.ENDPORT, () =>{
     console.log(`backend listening on port ${process.env.ENDPORT}`)
 })

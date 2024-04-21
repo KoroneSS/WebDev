@@ -300,7 +300,27 @@
         })
     })
     </script>
-
+    <!--Public Api (Geolocation From Ipdata)-->
+    <div class="location">
+    </div>
+    <script>
+        $(document).ready(function () {
+            fetch("http://localhost:3001/publicapi/",{
+                method:"GET"
+            })
+            .then(response => response.json())
+            .then(data =>{
+                console.log(data)
+                const locationDiv = document.querySelector('.location');
+                var location = `
+                        <div class="col text-center mb-3">
+                            <h1 class="fz-24">Hello, visitor from ${data.country_name}!</h1>
+                        </div>
+                    `
+                    $(`.location`).append(location)
+            });
+        })
+    </script>
     <!--footer-->
     <div class="container-fluid bg-customblue pt-4">
         <div class="row justify-content-center mx-auto">
