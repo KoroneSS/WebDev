@@ -67,24 +67,7 @@ app.get("/users", (req,res)=>{
         res.status(200).json(result);
     })
 })
-
-app.post("/getperm", (req,res)=>{
-    var id = req.body.uid;
-    console.log(`perm id = ${id}`);
-    if(!id){
-        return  res.status(400).send({error: true, message:'Please provide username and password'})
-    }
-    let sql = `SELECT a.admin_permission FROM \`Admin\` a WHERE a.admin_id = ?`
-    connection.query(sql,[id],(err,result)=>{
-        if (err) {
-            console.error(err);
-            res.status(500).json({ error:false, message: 'Internal Server Error'});
-        }
-        console.log(`perm result = ${result}`)
-        res.status(200).json(result);
-        
-    })
-})
+    
 
 app.post('/auth', (req,res) => {
     var username = req.body.username
@@ -372,10 +355,10 @@ app.get("/product-search/", (req,res)=>{
     let values;
     if(query.detailed_search == 'false'){
         let conditions = []
-        let values = []
+        values = []
         var where = ""
         if(query.category || query.isbn){
-            var where = "WHERE"
+            where = "WHERE"
         }
         if(query.category){
             conditions.push("b.book_category = ?")
@@ -392,38 +375,46 @@ app.get("/product-search/", (req,res)=>{
             b.book_image
         FROM Book b
         ${where} ${conditions.join(" AND ")}
-        ORDER BY b.book_id ASC
+        ORDER BY b.book_id ASC;
       `
         values = [query.category,`%${query.isbn}%`]
     }else{
         let conditions = [];
         values = [];
+        let where = false
         if(query.category){
             conditions.push("b.book_category = ?")
             values.push(query.category);
+            where = true;
         }
         if(query.title){
             conditions.push("b.book_title LIKE ?")
             values.push(`%${query.title}%`);
+            where = true;
         }
         if(query.publisher){
             conditions.push("b.book_publisher_name LIKE ?")
             values.push(`%${query.publisher}%`);
+            where = true;
         }
         if (query.pubdate_from) {
             conditions.push("b.book_publish_date >= ?");
             values.push(query.pubdate_from);
+            where = true;
         }
         if (query.pubdate_to) {
             conditions.push("b.book_publish_date <= ?");
             values.push(query.pubdate_to);
+            where = true;
         }
         if (query.author) {
             conditions.push("(a.author_fname LIKE ? OR a.author_lname LIKE ?)");
             values.push(`%${query.author}%`, `%${query.author}%`);
+            where = true;
         }
         if (query.availableOnly == 'true'){
             conditions.push("b.book_stock > 0")
+            where = true;
         }
 
         sql = `
@@ -434,7 +425,7 @@ app.get("/product-search/", (req,res)=>{
             FROM Book b
             LEFT JOIN \`Write\` w ON b.book_id = w.book_id
             LEFT JOIN Author a ON w.author_id = a.author_id
-            WHERE ${conditions.join(" AND ")}
+            ${where ? "WHERE" : ""} ${conditions.join(" AND ")}
             ORDER BY b.book_id ASC
         `;
         
