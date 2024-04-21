@@ -113,7 +113,7 @@
                         <h1 class="fz-24">Book Title</h1>
                     </div>
                     <div class="col text-center">
-                        <button class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</button>
+                        <a href="#" class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</a>
                     </div>
                 </div> 
             </div>
@@ -127,7 +127,7 @@
                         <h1 class="fz-24">Book Title</h1>
                     </div>
                     <div class="col text-center">
-                        <button class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</button>
+                        <a href="#" class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</a>
                     </div>
                 </div> 
             </div>
@@ -141,7 +141,7 @@
                         <h1 class="fz-24">Book Title</h1>
                     </div>
                     <div class="col text-center">
-                        <button class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</button>
+                        <a href="#" class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</a>
                     </div>
                 </div> 
             </div>
@@ -155,7 +155,7 @@
                         <h1 class="fz-24">Book Title</h1>
                     </div>
                     <div class="col text-center">
-                        <button class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</button>
+                        <a href="#" class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</a>
                     </div>
                 </div> 
             </div>
@@ -169,7 +169,7 @@
                         <h1 class="fz-24">Book Title</h1>
                     </div>
                     <div class="col text-center">
-                        <button class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</button>
+                        <a href="#" class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</a>
                     </div>
                 </div> 
             </div>
@@ -189,7 +189,7 @@
                     </div>
                     
                     <div class="col text-center">
-                        <button class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</button>
+                        <a href="#" class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</a>
                     </div>
                 </div> 
             </div>
@@ -201,7 +201,7 @@
                     </div>
                     
                     <div class="col text-center">
-                        <button class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</button>
+                        <a href="#" class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</a>
                     </div>
                 </div> 
             </div>
@@ -213,7 +213,7 @@
                     </div>
                     
                     <div class="col text-center">
-                        <button class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</button>
+                        <a href="#" class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</a>
                     </div>
                 </div> 
             </div>
@@ -225,7 +225,7 @@
                     </div>
                    
                     <div class="col text-center">
-                        <button class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</button>
+                        <a href="#" class="btn btn-primary btn-lg" style="--bs-btn-bg: #89B6E3;">See More</a>
                     </div>
                 </div> 
             </div>
@@ -233,6 +233,69 @@
         </div>
     </div>
     
+    <!--script for replacing the placeholder img and txt-->
+    <script>
+        $(document).ready(function () {
+            fetch("http://localhost:3001/product-search/?"+'',{
+                method:"GET"
+            })
+            .then(response => response.json())
+            .then(data =>{
+                console.log(data.result)
+                data.result.forEach(book => {
+
+                var img = document.createElement("img");
+                img.src = book.book_image;
+                img.classList.add("mb-2");
+                img.setAttribute("width", "150px");
+                img.setAttribute("height", "200px");
+                
+                // target each placeholder images
+                var targetImg = document.querySelector(`.container-fluid .row .col:nth-child(${book.book_id}) .col.text-center.mb-3`);
+                
+                // error handling (can't break inside foreach loop)
+                var BreakException = {};
+                try {
+                    if (targetImg) {
+                        targetImg.innerHTML = '';
+                        targetImg.appendChild(img);
+                    } throw BreakException;
+                }
+                catch (e) {
+                    if (e !== BreakException) throw e;
+                }
+
+                // target each placeholder booktitle text
+                var txt = document.querySelector(`.container-fluid .row .col:nth-child(${book.book_id}) .col.text-center.mb-3 .fz-24`);
+
+                // error handling (can't break inside foreach loop)
+                try {
+                    if (txt) {
+                        txt.innerHTML = '';
+                        txt.textContent = book.book_title;
+                        img.classList.add("fz-24");
+                    }  throw BreakException;
+                }
+                catch (e) {
+                    if (e !== BreakException) throw e;
+                }
+
+                // target each placeholder button
+                var link = document.querySelector(`.container-fluid .row .col:nth-child(${book.book_id}) .col.text-center [href='#']`);
+                try {
+                    if (link) {
+                        var href = `http://localhost:3000/product/${book.book_id}`
+                        link.setAttribute('href', href);
+                    }  throw BreakException;
+                }
+                catch (e) {
+                    if (e !== BreakException) throw e;
+                }
+            });
+        })
+    })
+    </script>
+
     <!--footer-->
     <div class="container-fluid bg-customblue pt-4">
         <div class="row justify-content-center mx-auto">
