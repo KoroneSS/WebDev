@@ -47,7 +47,10 @@ app.get("/products", (req,res) => {
         b.book_id
     ORDER by b.book_id ASC;`;
     connection.query(sql, (err, result) =>{
-        if (err) throw err;
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error:false, message: 'Internal Server Error'});
+        }
         res.status(200).json(result);
     })
 })
@@ -57,7 +60,10 @@ app.get("/products", (req,res) => {
 app.get("/users", (req,res)=>{
     let sql = `SELECT * FROM \`Admin\``
     connection.query(sql,(err,result)=>{
-        if (err) throw err;
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error:false, message: 'Internal Server Error'});
+        }
         res.status(200).json(result);
     })
 })
@@ -65,9 +71,15 @@ app.get("/users", (req,res)=>{
 app.post("/getperm", (req,res)=>{
     var id = req.body.uid;
     console.log(`perm id = ${id}`);
+    if(!id){
+        return  res.status(400).send({error: true, message:'Please provide username and password'})
+    }
     let sql = `SELECT a.admin_permission FROM \`Admin\` a WHERE a.admin_id = ?`
     connection.query(sql,[id],(err,result)=>{
-        if (err) throw err;
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error:false, message: 'Internal Server Error'});
+        }
         console.log(`perm result = ${result}`)
         res.status(200).json(result);
         
@@ -81,7 +93,7 @@ app.post('/auth', (req,res) => {
     connection.query(sql, [username,password], (err, result) =>{
         if (err) {
             console.error(err);
-            res.status(500).json({ error: 'Internal Server Error'});
+            res.status(500).json({ valid:false, message: 'Internal Server Error'});
         }else{
             if(result.length > 0){
                 res.status(200).json({valid:true, id:result[0].admin_id, perm:result[0].admin_permission})
@@ -97,7 +109,10 @@ app.get("/user/:id", (req,res)=>{
     console.log(id);
     let sql = `SELECT * FROM \`Admin\` a WHERE a.admin_id = ?`
     connection.query(sql,id,(err,result)=>{
-        if (err) throw err;
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error:false, message: 'Internal Server Error'});
+        }
         res.status(200).json(result);
     })
 })
@@ -111,7 +126,10 @@ app.post('/user', (req,res) =>{
     }
     let sql = 'INSERT INTO \`Admin\` (admin_username,admin_password, admin_permission) VALUES (?,?,1)'
     connection.query(sql, [username,password], (err, result) =>{
-        if (err) throw err;
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error:false, message: 'Internal Server Error'});
+        }
         return res.send({error:false, data: result.affectedRows, message:"New user has been created successfully"});
     })
 
@@ -127,7 +145,10 @@ app.delete("/user", (req,res) =>{
     }
     let sql = 'DELETE FROM \`Admin\` a Where a.admin_id = ?'
     connection.query(sql,[id],(err,result) => {
-        if (err) throw err;
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error:false, message: 'Internal Server Error'});
+        }
         return res.send({error:false, data:result.affectedRows, message:"Successfully Deleted!"})
     })
 })
@@ -142,7 +163,10 @@ app.put("/user", (req,res) =>{
     }
     let sql = 'UPDATE \`Admin\` a SET a.admin_username = ?, a.admin_password = ? WHERE a.admin_id = ?'
     connection.query(sql,[username,password,id], (err,result) => {
-        if(err) throw err;
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error:false, message: 'Internal Server Error'});
+        }
         return res.send({error:false, data:result.affectedRows, message:"Successfully Updated!"})
     })
 
@@ -274,7 +298,8 @@ app.delete("/product", (req, res) => {
     let deleteWriteSql = "DELETE FROM `Write` WHERE book_id = ?";
     connection.query(deleteWriteSql, id, (err, result) => {
         if (err) {
-            return res.status(500).send({ error: true, message: "Internal server error" });
+            console.error(err);
+            res.status(500).json({ error:false, message: 'Internal Server Error'});
         }
 
             // Finally, delete the record from the Book table
