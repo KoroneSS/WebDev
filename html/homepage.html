@@ -243,53 +243,58 @@
             .then(data =>{
                 console.log(data.result)
                 data.result.forEach(book => {
-
                 var img = document.createElement("img");
                 img.src = book.book_image;
                 img.classList.add("mb-2");
                 img.setAttribute("width", "150px");
                 img.setAttribute("height", "200px");
                 
-                // target each placeholder images
+                // target each placeholder images in trending category
                 var targetImg = document.querySelector(`.container-fluid .row .col:nth-child(${book.book_id}) .col.text-center.mb-3`);
                 
-                // error handling (can't break inside foreach loop)
-                var BreakException = {};
-                try {
-                    if (targetImg) {
-                        targetImg.innerHTML = '';
-                        targetImg.appendChild(img);
-                    } throw BreakException;
-                }
-                catch (e) {
-                    if (e !== BreakException) throw e;
+                if (targetImg) {
+                    targetImg.innerHTML = '';
+                    targetImg.appendChild(img);
                 }
 
-                // target each placeholder booktitle text
+                // target each placeholder booktitle text in trending category
                 var txt = document.querySelector(`.container-fluid .row .col:nth-child(${book.book_id}) .col.text-center.mb-3 .fz-24`);
 
-                // error handling (can't break inside foreach loop)
-                try {
-                    if (txt) {
-                        txt.innerHTML = '';
-                        txt.textContent = book.book_title;
-                        img.classList.add("fz-24");
-                    }  throw BreakException;
-                }
-                catch (e) {
-                    if (e !== BreakException) throw e;
+                if (txt) {
+                    txt.innerHTML = '';
+                    txt.textContent = book.book_title;
+                    img.classList.add("fz-24");
                 }
 
-                // target each placeholder button
+                // target each placeholder button in trending category
                 var link = document.querySelector(`.container-fluid .row .col:nth-child(${book.book_id}) .col.text-center [href='#']`);
-                try {
-                    if (link) {
-                        var href = `http://localhost:3000/product/${book.book_id}`
-                        link.setAttribute('href', href);
-                    }  throw BreakException;
+                if (link) {
+                    var href = `http://localhost:3000/product/${book.book_id}`
+                    link.setAttribute('href', href);
                 }
-                catch (e) {
-                    if (e !== BreakException) throw e;
+
+                // best selling 
+                if (book.book_id > 5) {
+                    // target image
+                    var bestsellerimg = document.querySelector(`.container-fluid.bg-customgray .row .col:nth-child(${book.book_id - 5}) .col.text-center.mb-3`);
+                    if (bestsellerimg) {
+                        bestsellerimg.innerHTML = '';
+                        bestsellerimg.appendChild(img);
+                    }
+                    // target link
+                    var bestsellerlink = document.querySelector(`.container-fluid.bg-customgray .row .col:nth-child(${book.book_id - 5}) [href='#']`);
+                    if (bestsellerlink) {
+                        var href = `http://localhost:3000/product/${book.book_id}`
+                        bestsellerlink.setAttribute('href', href);
+                    }
+
+                    // append text
+                    var bestsellertxt = `
+                        <div class="col text-center mb-3">
+                            <h1 class="fz-24">${book.book_title}</h1>
+                        </div>
+                    `
+                    $(`.container-fluid.bg-customgray .row .col:nth-child(${book.book_id - 5}) .col.text-center.mb-3`).append(bestsellertxt)
                 }
             });
         })
