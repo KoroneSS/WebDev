@@ -26,6 +26,109 @@ connection.connect((err) =>{
     console.log(`connected DB: ${process.env.DATABASE}`)
 })
 
+
+
+
+
+
+app.post('/auth', (req,res) => {
+    var username = req.body.username
+    var password = req.body.password
+    let sql = `SELECT * FROM \`Admin\` WHERE admin_username = ? AND admin_password = ?`;
+    connection.query(sql, [username,password], (err, result) =>{
+        if (err) {
+            console.error(err);
+            res.status(500).json({ valid:false, message: 'Internal Server Error'});
+        }else{
+            if(result.length > 0){
+                res.status(401).json({valid:true, id:result[0].admin_id, perm:result[0].admin_permission})
+            }else{
+                res.status(200).json({valid:false})
+            }
+        }
+    })
+})
+
+app.get("/users", (req,res)=>{
+    let sql = `SELECT * FROM \`Admin\``
+    connection.query(sql,(err,result)=>{
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error:false, message: 'Internal Server Error'});
+        }
+        res.status(200).json(result);
+    })
+})
+    
+
+app.get("/user/:id", (req,res)=>{
+    var id = req.params.id;
+    console.log(id);
+    let sql = `SELECT * FROM \`Admin\` a WHERE a.admin_id = ?`
+    connection.query(sql,id,(err,result)=>{
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error:false, message: 'Internal Server Error'});
+        }
+        res.status(200).json(result);
+    })
+})
+
+app.post('/user', (req,res) =>{
+    var username = req.body.username
+    var password = req.body.password
+    console.log(`${username} ${password}`)
+    if(!username || !password){
+        return  res.status(400).send({error: true, message:'Please provide username and password'})
+    }
+    let sql = 'INSERT INTO \`Admin\` (admin_username,admin_password, admin_permission) VALUES (?,?,1)'
+    connection.query(sql, [username,password], (err, result) =>{
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error:false, message: 'Internal Server Error'});
+        }
+        return res.status(200).send({error:false, data: result.affectedRows, message:"New user has been created successfully"});
+    })
+
+})
+
+app.delete("/user", (req,res) =>{
+    var id = req.body.id
+    console.log(id)
+
+    if(!id){
+        return res.status(400).send({error:true, message:"id is not valid"})
+
+    }
+    let sql = 'DELETE FROM \`Admin\` a Where a.admin_id = ?'
+    connection.query(sql,[id],(err,result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error:false, message: 'Internal Server Error'});
+        }
+        return res.status(200).send({error:false, data:result.affectedRows, message:"Successfully Deleted!"})
+    })
+})
+
+app.put("/user", (req,res) =>{
+    var id = req.body.id
+    var username = req.body.username
+    var password = req.body.password
+    if(!id){
+        return res.status(400).send({error:true, message:"id is not valid"})
+
+    }
+    let sql = 'UPDATE \`Admin\` a SET a.admin_username = ?, a.admin_password = ? WHERE a.admin_id = ?'
+    connection.query(sql,[username,password,id], (err,result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error:false, message: 'Internal Server Error'});
+        }
+        return res.status(200).send({error:false, data:result.affectedRows, message:"Successfully Updated!"})
+    })
+
+})
+
 app.get("/products", (req,res) => {
     let sql = `SELECT
     b.book_id,
@@ -57,104 +160,6 @@ app.get("/products", (req,res) => {
 })
 
 
-
-app.get("/users", (req,res)=>{
-    let sql = `SELECT * FROM \`Admin\``
-    connection.query(sql,(err,result)=>{
-        if (err) {
-            console.error(err);
-            res.status(500).json({ error:false, message: 'Internal Server Error'});
-        }
-        res.status(200).json(result);
-    })
-})
-    
-
-app.post('/auth', (req,res) => {
-    var username = req.body.username
-    var password = req.body.password
-    let sql = `SELECT * FROM \`Admin\` WHERE admin_username = ? AND admin_password = ?`;
-    connection.query(sql, [username,password], (err, result) =>{
-        if (err) {
-            console.error(err);
-            res.status(500).json({ valid:false, message: 'Internal Server Error'});
-        }else{
-            if(result.length > 0){
-                res.status(401).json({valid:true, id:result[0].admin_id, perm:result[0].admin_permission})
-            }else{
-                res.status(200).json({valid:false})
-            }
-        }
-    })
-})
-
-app.get("/user/:id", (req,res)=>{
-    var id = req.params.id;
-    console.log(id);
-    let sql = `SELECT * FROM \`Admin\` a WHERE a.admin_id = ?`
-    connection.query(sql,id,(err,result)=>{
-        if (err) {
-            console.error(err);
-            res.status(500).json({ error:false, message: 'Internal Server Error'});
-        }
-        res.status(200).json(result);
-    })
-})
-
-app.post('/user', (req,res) =>{
-    var username = req.body.username
-    var password = req.body.password
-    console.log(`${username} ${password}`)
-    if(!username || !password){
-        return  res.status(400).send({error: true, message:'Please provide username and password'})
-    }
-    let sql = 'INSERT INTO \`Admin\` (admin_username,admin_password, admin_permission) VALUES (?,?,1)'
-    connection.query(sql, [username,password], (err, result) =>{
-        if (err) {
-            console.error(err);
-            res.status(500).json({ error:false, message: 'Internal Server Error'});
-        }
-        return res.send({error:false, data: result.affectedRows, message:"New user has been created successfully"});
-    })
-
-})
-
-app.delete("/user", (req,res) =>{
-    var id = req.body.id
-    console.log(id)
-
-    if(!id){
-        return res.status(400).send({error:true, message:"id is not valid"})
-
-    }
-    let sql = 'DELETE FROM \`Admin\` a Where a.admin_id = ?'
-    connection.query(sql,[id],(err,result) => {
-        if (err) {
-            console.error(err);
-            res.status(500).json({ error:false, message: 'Internal Server Error'});
-        }
-        return res.send({error:false, data:result.affectedRows, message:"Successfully Deleted!"})
-    })
-})
-
-app.put("/user", (req,res) =>{
-    var id = req.body.id
-    var username = req.body.username
-    var password = req.body.password
-    if(!id){
-        return res.status(400).send({error:true, message:"id is not valid"})
-
-    }
-    let sql = 'UPDATE \`Admin\` a SET a.admin_username = ?, a.admin_password = ? WHERE a.admin_id = ?'
-    connection.query(sql,[username,password,id], (err,result) => {
-        if (err) {
-            console.error(err);
-            res.status(500).json({ error:false, message: 'Internal Server Error'});
-        }
-        return res.send({error:false, data:result.affectedRows, message:"Successfully Updated!"})
-    })
-
-})
 app.get("/product/:id", (req,res) => {
     var id = req.params.id;
     
@@ -292,7 +297,7 @@ app.delete("/product", (req, res) => {
             if (err) {
                 return res.status(500).send({ error: true, message: "Internal server error" });
             }
-            return res.send({ error: false, data: result.affectedRows, message: "Successfully Deleted!" });
+            return res.status(200).send({ error: false, data: result.affectedRows, message: "Successfully Deleted!" });
         });
     });
     
@@ -305,7 +310,7 @@ app.get("/author/:id", (req,res)=>{
         if(err){
             return res.status(500).send({ error: true, message: "Internal server error" });
         }
-        return res.send({error:false,author:result})
+        return res.status(200).send({error:false,author:result})
     })
 })
 
@@ -345,7 +350,7 @@ GROUP BY
         if(err){
             return res.status(500).send({ error: true, message: "Internal server error" });
         }
-        return res.send({error:false,data:result})
+        return res.status(200).send({error:false,data:result})
     })
 })
 
@@ -438,7 +443,7 @@ app.get("/product-search/", (req,res)=>{
             console.log(err)
             return res.status(500).send({ error: true, message: "Internal server error" });
         }
-        return res.send({error:false,result:result})
+        return res.status(200).send({error:false,result:result})
     })
 })
 
