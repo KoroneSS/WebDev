@@ -449,13 +449,12 @@ app.get("/publicapi", async (req, res) => {
       const cachedData = memoryCache.get(cacheKey);
   
       if (cachedData) {
-        console.log('Serving data from cache');
         return res.json(cachedData);
       }
-  
-      const data = await fetchAPI();
-      memoryCache.put(cacheKey, data, 60 * 10); // Cache for 10 minutes
-      res.json(data);
+        
+        const data = await fetchAPI();
+        memoryCache.put(cacheKey, data, 10 * 60000); // Cache for 10 minutes (Time in ms)
+        res.json(data);
       
     } catch (error) {
       console.error("Error fetching data:", error);
