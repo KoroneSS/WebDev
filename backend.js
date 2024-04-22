@@ -450,12 +450,12 @@ app.get("/publicapi", async (req, res) => {
   
       if (cachedData) {
         return res.json(cachedData);
-      }
-        
+      } else {
         const data = await fetchAPI();
         memoryCache.put(cacheKey, data, 10 * 60000); // Cache for 10 minutes (Time in ms)
         res.json(data);
-      
+      }
+
     } catch (error) {
       console.error("Error fetching data:", error);
       res.status(500).json({ error: "Internal server error" });
