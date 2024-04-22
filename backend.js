@@ -5,6 +5,7 @@ const router = express.Router()
 const cors = require("cors")
 const dotenv = require("dotenv")
 const app = express()
+const memoryCache = require('memory-cache');
 dotenv.config()
 app.use(router)
 app.use(cors())
@@ -442,21 +443,32 @@ app.get("/product-search/", (req,res)=>{
 })
 
 app.get("/publicapi", async (req, res) => {
+    const cacheKey = 'publicApiData';
+  
     try {
-        const data = await fetchAPI();
-        res.json(data);
+      const cachedData = memoryCache.get(cacheKey);
+  
+      if (cachedData) {
+        console.log('Serving data from cache');
+        return res.json(cachedData);
+      }
+  
+      const data = await fetchAPI();
+      memoryCache.put(cacheKey, data, 60 * 10); // Cache for 10 minutes
+      res.json(data);
+      
     } catch (error) {
-        console.error("Error fetching data:", error);
-        res.status(500).json({ error: "Internal server error" });
+      console.error("Error fetching data:", error);
+      res.status(500).json({ error: "Internal server error" });
     }
-
+  
     async function fetchAPI(){
-        const BASE_URL = `https://api.ipdata.co?api-key=${process.env.API_KEY}&fields=country_name`;
-        const response = await fetch(BASE_URL);
-        const data = await response.json();
-        return data;
+      const BASE_URL = `https://api.ipdata.co?api-key=${process.env.API_KEY}&fields=country_name`;
+      const response = await fetch(BASE_URL);
+      const data = await response.json();
+      return data;
     }
-})
+  })
 
 app.listen(process.env.ENDPORT, () =>{
     console.log(`backend listening on port ${process.env.ENDPORT}`)
