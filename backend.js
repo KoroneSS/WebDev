@@ -80,7 +80,7 @@ app.post('/auth', (req,res) => {
             res.status(500).json({ valid:false, message: 'Internal Server Error'});
         }else{
             if(result.length > 0){
-                res.status(200).json({valid:true, id:result[0].admin_id, perm:result[0].admin_permission})
+                res.status(401).json({valid:true, id:result[0].admin_id, perm:result[0].admin_permission})
             }else{
                 res.status(200).json({valid:false})
             }
