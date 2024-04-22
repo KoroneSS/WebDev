@@ -22,6 +22,8 @@
             }else{
                 $('#signin').text('Logged in');
             }
+            
+            
 
             fetch(`http://localhost:3001/user/${id}`,
                 {
@@ -39,6 +41,7 @@
                     }else{
                         var role = "Local Admin"
                     }
+                    
                     $('#adminrole').text(role)
                     
                 })
@@ -135,7 +138,7 @@
                             <img src="/image/admin/admin.png" class="img-fluid" width="200px" height="200px">
                         </div>
                         <div class="col text-center my-4">
-                            <h1 class="fz-24" id="adminame">Hi</h1>
+                            <h1 class="fz-24" id="adminname">Hi</h1>
                             <h1 class="fz-16" id="adminrole">Admin</h1>
                         </div>
 
@@ -167,7 +170,7 @@
                     <div class="row row-cols-1">
                         <div class="col py-4 px-4">
                             <img src="/image/admin/adminicon.png" class="img-fluid" style="padding-left: 2vw;">
-                            <h1 class="fz-24 d-inline-block">Administration</h1>
+                            <h1 class="fz-24 d-inline-block">User Creation</h1>
                         </div>
 
                         <!-- admin creation-->
