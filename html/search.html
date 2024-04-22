@@ -52,7 +52,7 @@
         const queryString = `detailed_search=false&category=${categoryString}&isbn=${isbnString}`
         window.location.href = `/search-result/?${queryString}`
       })
-
+      
       $('.detail-search').on('submit', function () {
         event.preventDefault()
         var categoryInput = $('#taxon2').val()
