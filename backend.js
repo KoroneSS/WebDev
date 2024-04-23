@@ -54,7 +54,7 @@ app.get("/users", (req,res)=>{
     connection.query(sql,(err,result)=>{
         if (err) {
             console.error(err);
-            res.status(500).json({ error:false, message: 'Internal Server Error'});
+            res.status(500).json({ error:true, message: 'Internal Server Error'});
         }
         res.status(200).json(result);
     })
@@ -68,7 +68,7 @@ app.get("/user/:id", (req,res)=>{
     connection.query(sql,id,(err,result)=>{
         if (err) {
             console.error(err);
-            res.status(500).json({ error:false, message: 'Internal Server Error'});
+            res.status(500).json({ error:true, message: 'Internal Server Error'});
         }
         res.status(200).json(result);
     })
@@ -85,7 +85,7 @@ app.post('/user', (req,res) =>{
     connection.query(sql, [username,password], (err, result) =>{
         if (err) {
             console.error(err);
-            res.status(500).json({ error:false, message: 'Internal Server Error'});
+            res.status(500).json({ error:true, message: 'Internal Server Error'});
         }
         return res.status(200).send({error:false, data: result.affectedRows, message:"New user has been created successfully"});
     })
@@ -104,7 +104,7 @@ app.delete("/user", (req,res) =>{
     connection.query(sql,[id],(err,result) => {
         if (err) {
             console.error(err);
-            res.status(500).json({ error:false, message: 'Internal Server Error'});
+            res.status(500).json({ error:true, message: 'Internal Server Error'});
         }
         return res.status(200).send({error:false, data:result.affectedRows, message:"Successfully Deleted!"})
     })
@@ -122,7 +122,7 @@ app.put("/user", (req,res) =>{
     connection.query(sql,[username,password,id], (err,result) => {
         if (err) {
             console.error(err);
-            res.status(500).json({ error:false, message: 'Internal Server Error'});
+            res.status(500).json({ error:true, message: 'Internal Server Error'});
         }
         return res.status(200).send({error:false, data:result.affectedRows, message:"Successfully Updated!"})
     })
@@ -153,7 +153,7 @@ app.get("/products", (req,res) => {
     connection.query(sql, (err, result) =>{
         if (err) {
             console.error(err);
-            res.status(500).json({ error:false, message: 'Internal Server Error'});
+            res.status(500).json({ error:true, message: 'Internal Server Error'});
         }
         res.status(200).json(result);
     })
@@ -186,7 +186,10 @@ app.get("/product/:id", (req,res) => {
     GROUP BY
         b.book_id;`;
     connection.query(sql, id,(err, result) =>{
-        if (err) throw err;
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error:true, message: 'Internal Server Error'});
+        }
         res.status(200).json(result);
     })
 })
