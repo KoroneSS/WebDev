@@ -14,7 +14,7 @@ Instruction on how to run the program
 2. run "npm start" in the terminal
 3. create new terminal
 4. run "npm run startback" on the new terminal
-5. open the website http://localhost:8023/
+5. open the website http://localhost:3000/
 6. finished!
 
 Note: to log in, you can look up in the database or use username "muthitha", password "cat" to log in
