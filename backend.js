@@ -260,7 +260,7 @@ app.put("/product", (req, res) => {
                 return res.status(500).json({ error: true, message: "Internal Server Error" });
             }
 
-            // Delete data in Write
+            // update data in Write
             let updateWriteSql = `UPDATE \`Write\` SET author_id = ? WHERE book_id = ?`
 
             connection.query(updateWriteSql, [author_id,book_id], (err, result) => {
@@ -386,7 +386,7 @@ app.get("/product-search/", (req,res)=>{
         ${where} ${conditions.join(" AND ")}
         ORDER BY b.book_id ASC;
       `
-        values = [query.category,`%${query.isbn}%`]
+        
     }else{
         let conditions = [];
         values = [];
